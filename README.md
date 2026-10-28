@@ -8,7 +8,7 @@ Follow a baby's growth day by day — from the first day of the last menstrual p
 |---|---|
 | `sh run.sh setup` | `run setup` |
 
-`setup` installs Node (Homebrew on macOS, winget on Windows) when missing, runs `npm install`, and copies `.env.example` to `.env`.
+`setup` installs Node (Homebrew on macOS, winget on Windows) when missing, runs `npm ci` (installs exactly what `package-lock.json` lists, never rewrites it), and copies `.env.example` to `.env`.
 
 ## Commands
 

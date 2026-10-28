@@ -46,8 +46,8 @@ cmd_setup() {
     MINGW*|MSYS*|CYGWIN*) setup_windows ;;
     *) echo "No installer for $(uname -s) — install Node LTS yourself." ;;
   esac
-  echo "=== npm install ==="
-  npm --prefix "$ROOT_DIR" install
+  echo "=== npm ci ==="
+  npm --prefix "$ROOT_DIR" ci
   [ -f "$ROOT_DIR/.env" ] || cp "$ROOT_DIR/.env.example" "$ROOT_DIR/.env"
   echo "Setup done. Start the app: sh run.sh start"
 }
