@@ -50,7 +50,6 @@ export const vi = {
     loading: "Đang tải…",
     emptyTitle: "Chào mừng bạn!",
     emptyBody: "Thêm em bé để theo dõi bé lớn lên từng ngày, từ khi còn trong bụng mẹ đến năm 18 tuổi.",
-    dayOfPregnancy: "Ngày thứ {day} của thai kỳ",
     dueDate: "Dự sinh {date}",
     daysUntilDue: "còn {days} ngày",
     daysSinceBirth: "Đã chào đời {days} ngày",

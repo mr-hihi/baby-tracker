@@ -78,12 +78,20 @@ describe("formatPregnancyAge", () => {
     expect(formatPregnancyAge(27, 3, "vi", vi)).toBe("27 tuần 3 ngày");
   });
 
-  it("drops zero days", () => {
-    expect(formatPregnancyAge(12, 0, "en", en)).toBe("12 weeks");
+  it("keeps zero days", () => {
+    expect(formatPregnancyAge(21, 0, "vi", vi)).toBe("21 tuần 0 ngày");
   });
 
-  it("shows only days in the first week", () => {
-    expect(formatPregnancyAge(0, 0, "en", en)).toBe("0 days");
+  it("keeps zero weeks in the first week", () => {
+    expect(formatPregnancyAge(0, 3, "vi", vi)).toBe("0 tuần 3 ngày");
+  });
+
+  it("uses the plural for zero in English", () => {
+    expect(formatPregnancyAge(0, 0, "en", en)).toBe("0 weeks 0 days");
+  });
+
+  it("uses the singular for one in English", () => {
+    expect(formatPregnancyAge(1, 1, "en", en)).toBe("1 week 1 day");
   });
 });
 

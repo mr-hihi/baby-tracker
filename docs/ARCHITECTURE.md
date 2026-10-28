@@ -33,7 +33,7 @@ static HTML (prerendered, no baby data)
 | Module | Responsibility |
 |---|---|
 | `steps.ts` | One timeline: weeks 1–40 then ages 0–18 (59 steps); next / previous cross from week 40 to age 0; `stepWindow` shows 5 steps of one kind |
-| `timeline.ts` | `growthProgress(lastPeriodDate, today)` → pregnancy (day, weeks + days, due date) or born (age span); `stepForProgress` |
+| `timeline.ts` | `growthProgress(lastPeriodDate, today)` → pregnancy (weeks + days, due date) or born (age span); `stepForProgress` |
 | `pregnancy-weeks.ts` | Week table: fruit (weeks 4–40), length, weight in grams, heart rate |
 | `childhood-years.ts` | WHO/CDC medians per age and gender; resting heart rate bands |
 | `stats.ts` | `growthStats(step, gender)`; image paths |

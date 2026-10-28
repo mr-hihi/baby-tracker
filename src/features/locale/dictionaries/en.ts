@@ -48,7 +48,6 @@ export const en: Dictionary = {
     loading: "Loading…",
     emptyTitle: "Welcome!",
     emptyBody: "Add your baby to follow them grow day by day, from the womb to age 18.",
-    dayOfPregnancy: "Day {day} of pregnancy",
     dueDate: "Due {date}",
     daysUntilDue: "{days} days to go",
     daysSinceBirth: "{days} days since birth",

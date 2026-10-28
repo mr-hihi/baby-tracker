@@ -11,7 +11,6 @@ export function describeProgress(progress: GrowthProgress, locale: Locale, dict:
     return {
       headline: formatPregnancyAge(progress.weeks, progress.days, locale, dict),
       details: [
-        fill(dashboard.dayOfPregnancy, { day: formatNumber(progress.dayOfPregnancy, locale) }),
         `${fill(dashboard.dueDate, { date: formatIsoDate(progress.dueDate, locale) })} · ${fill(dashboard.daysUntilDue, { days: formatNumber(progress.daysUntilDue, locale) })}`,
       ],
     };

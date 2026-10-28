@@ -16,6 +16,29 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Mobile-first web app that follows one or more babies day by day — from the first day of the last menstrual period, through 40 pregnancy weeks, up to age 18. Frontend only: Next.js 16 static export (no server), data in the browser's `localStorage`, Vietnamese / English, hosted on GitHub Pages. Node version pinned in `.node-version`. Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
+<!-- BEGIN AUTO-MANAGED: business-docs (/ba-add) -->
+## Business domain docs — MUST READ BEFORE ANY WORK
+
+Business specs under `docs/business/` are the **source of truth** for behavior, data model,
+workflow, API surface and permissions. Code is the implementation, not the spec.
+
+**Mandatory protocol — before writing, editing, reviewing or testing ANY code:**
+
+1. Open the index `docs/business.md` and identify which domain(s) the task touches.
+2. Read the full business doc of every touched domain — including every sub-domain file under
+   `docs/business/{N}-{slug}/` when the domain is split.
+3. Read the matching test cases in `docs/test-cases/{N}-{slug}.md` before changing behavior.
+4. If code and spec disagree → STOP and ask. Never silently treat the code as the spec.
+5. If the change alters behavior → update the business doc + test cases in the SAME change.
+   Specs describe the current state; they are never a changelog.
+
+| # | Domain | Business doc | Test cases |
+|---|---|---|---|
+| 1 | Baby Progress | `docs/business/1-baby-progress.md` | `docs/test-cases/1-baby-progress.md` |
+
+Skip only for: typo / formatting fixes, dependency bumps, and pure read-only questions.
+<!-- END AUTO-MANAGED: business-docs -->
+
 ## Documentation
 
 | Topic | Doc |

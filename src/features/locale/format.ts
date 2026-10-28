@@ -46,10 +46,7 @@ export function formatIsoDate(iso: IsoDate, locale: Locale): string {
 }
 
 export function formatPregnancyAge(weeks: number, days: number, locale: Locale, dict: Dictionary): string {
-  const parts: string[] = [];
-  if (weeks > 0) parts.push(count(dict.units.week, weeks, locale));
-  if (days > 0 || weeks === 0) parts.push(count(dict.units.day, days, locale));
-  return parts.join(" ");
+  return `${count(dict.units.week, weeks, locale)} ${count(dict.units.day, days, locale)}`;
 }
 
 export function formatChildAge(age: CalendarSpan, locale: Locale, dict: Dictionary): string {

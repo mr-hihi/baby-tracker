@@ -8,7 +8,14 @@ describe("describeProgress", () => {
   it("describes a pregnancy in Vietnamese", () => {
     expect(describeProgress(growthProgress("2026-04-01", "2026-10-27"), "vi", vi)).toEqual({
       headline: "29 tuần 6 ngày",
-      details: ["Ngày thứ 210 của thai kỳ", "Dự sinh 06/01/2027 · còn 71 ngày"],
+      details: ["Dự sinh 06/01/2027 · còn 71 ngày"],
+    });
+  });
+
+  it("shows completed weeks and zero days on day 148", () => {
+    expect(describeProgress(growthProgress("2026-06-03", "2026-10-28"), "vi", vi)).toEqual({
+      headline: "21 tuần 0 ngày",
+      details: ["Dự sinh 10/03/2027 · còn 133 ngày"],
     });
   });
 

@@ -8,10 +8,9 @@ describe("estimatedBirthDate", () => {
 });
 
 describe("growthProgress", () => {
-  it("starts on day 1, week 0 on the last period date", () => {
+  it("starts at 0 weeks 0 days on the last period date", () => {
     expect(growthProgress("2026-10-27", "2026-10-27")).toEqual({
       stage: "pregnancy",
-      dayOfPregnancy: 1,
       weeks: 0,
       days: 0,
       dueDate: "2027-08-03",
@@ -22,15 +21,14 @@ describe("growthProgress", () => {
   it("splits elapsed days into weeks and days", () => {
     expect(growthProgress("2026-04-01", "2026-10-27")).toMatchObject({
       stage: "pregnancy",
-      dayOfPregnancy: 210,
       weeks: 29,
       days: 6,
       daysUntilDue: 71,
     });
   });
 
-  it("treats a last period date in the future as day 1", () => {
-    expect(growthProgress("2026-11-01", "2026-10-27")).toMatchObject({ stage: "pregnancy", dayOfPregnancy: 1 });
+  it("treats a last period date in the future as 0 weeks 0 days", () => {
+    expect(growthProgress("2026-11-01", "2026-10-27")).toMatchObject({ stage: "pregnancy", weeks: 0, days: 0 });
   });
 
   it("is still pregnancy on day 280", () => {

@@ -6,7 +6,6 @@ export const PREGNANCY_DAYS = 280;
 export type GrowthProgress =
   | {
       stage: "pregnancy";
-      dayOfPregnancy: number;
       weeks: number;
       days: number;
       dueDate: IsoDate;
@@ -29,7 +28,6 @@ export function growthProgress(lastPeriodDate: IsoDate, today: IsoDate): GrowthP
   if (elapsed < PREGNANCY_DAYS) {
     return {
       stage: "pregnancy",
-      dayOfPregnancy: elapsed + 1,
       weeks: Math.floor(elapsed / 7),
       days: elapsed % 7,
       dueDate: birthDate,
