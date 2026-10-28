@@ -1,0 +1,30 @@
+# dependencies
+node_modules/
+/.pnp
+.pnp.*
+
+# testing
+/coverage
+
+# next.js
+**/.next/
+**/out/
+/build
+next-env.d.ts
+*.tsbuildinfo
+
+# env files — only the example is tracked
+.env
+.env.*
+!.env.example
+
+# logs
+**/logs/
+*.log
+
+# misc
+.DS_Store
+*.pem
+.vercel
+.claude/tmp/
+.claude/temp/

@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  --color-page: #f1faf8;
+  --color-surface: #ffffff;
+  --color-brand: #12a08c;
+  --color-brand-strong: #0d7f6f;
+  --color-brand-soft: #d3f2ec;
+  --color-ink: #1e2b2a;
+  --color-muted: #7d8e8b;
+  --color-line: #e3eeec;
+  --color-danger: #c8463d;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --shadow-card: 0 12px 32px -12px rgb(18 160 140 / 0.22);
+  --shadow-float: 0 10px 24px -8px rgb(30 43 42 / 0.18);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+  }
+
+  dialog::backdrop {
+    background: rgb(30 43 42 / 0.45);
+  }
+}
