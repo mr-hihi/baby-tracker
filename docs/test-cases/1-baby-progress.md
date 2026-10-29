@@ -19,7 +19,7 @@ Shared step **Add baby** `{date}`:
   2. Add baby with date = today − 147 days (`2026-06-03`)
 - **Expected:**
   - Headline under "Bông": "21 tuần 0 ngày"
-  - Detail line: "Dự sinh 10/03/2027 · còn 133 ngày"
+  - Detail line: "Dự sinh {today + 133 days, dd/MM/yyyy} · còn 133 ngày" (e.g. "Dự sinh 10/03/2027 · còn 133 ngày")
   - No text "Ngày thứ 148" anywhere on the page
 
 ### TC-BP-02: Weeks and non-zero days
@@ -62,7 +62,7 @@ Shared step **Add baby** `{date}`:
   5. Click "Save"
 - **Expected:**
   - Headline: "21 weeks 0 days"
-  - Detail line: "Due Mar 10, 2027 · 133 days to go"
+  - Detail line: "Due {today + 133 days, MMM d, yyyy} · 133 days to go" (e.g. "Due Mar 10, 2027 · 133 days to go")
   - No text "Day 148" anywhere on the page
 
 ### TC-BP-06: English singular week and day
@@ -94,7 +94,7 @@ Shared step **Add baby** `{date}`:
   2. Add baby with date = today − 280 days (`2026-01-21`)
 - **Expected:**
   - Headline: "0 ngày"
-  - Detail lines: "Đã chào đời 0 ngày", "Ngày sinh dự kiến 28/10/2026"
+  - Detail lines: "Đã chào đời 0 ngày", "Ngày sinh dự kiến {today, dd/MM/yyyy}" (e.g. "Ngày sinh dự kiến 28/10/2026")
   - No text "tuần" in the headline
 
 ### Other screens
