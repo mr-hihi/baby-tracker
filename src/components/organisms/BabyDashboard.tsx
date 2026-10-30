@@ -9,12 +9,13 @@ import { selectBabiesLoaded, selectSelectedBaby, type Baby } from "@/features/ba
 import { describeProgress } from "@/features/babies/describeProgress";
 import { dialogOpened } from "@/features/dialogs/dialogSlice";
 import { isSameStep, type GrowthStep } from "@/features/growth/steps";
-import { growthProgress, stepForProgress } from "@/features/growth/timeline";
+import { currentPointForProgress, growthProgress, stepForProgress } from "@/features/growth/timeline";
 import { useLocale } from "@/features/locale/LocaleProvider";
 import { todayIso } from "@/lib/date";
-import { agePath, localePath, weekPath, withBasePath } from "@/lib/site";
+import { localePath, stepPath, withBasePath } from "@/lib/site";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { GrowthCard } from "./GrowthCard";
+import { VaccineCard } from "./VaccineCard";
 
 function DashboardSkeleton({ label }: { label: string }) {
   return (
@@ -59,7 +60,7 @@ function BabyOverview({ baby }: { baby: Baby }) {
   const currentStep = stepForProgress(progress);
   const [selected, setSelected] = useState<GrowthStep>(currentStep);
   const { headline, details } = describeProgress(progress, locale, dict);
-  const detailsPath = selected.kind === "week" ? weekPath(selected.value) : agePath(selected.value);
+  const detailsPath = stepPath(selected);
   const showGender = progress.stage === "born" ? baby.gender : undefined;
   const headingId = useId();
 
@@ -101,6 +102,7 @@ function BabyOverview({ baby }: { baby: Baby }) {
           </Link>
         </div>
       </GrowthCard>
+      <VaccineCard baby={baby} point={currentPointForProgress(progress)} today={today} />
     </section>
   );
 }

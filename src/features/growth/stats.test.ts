@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { babyImagePath, fruitImagePath, growthStats } from "./stats";
-import { ageStep, weekStep } from "./steps";
+import { monthBodySize } from "./infant-months";
+import { ageStep, monthStep, weekStep } from "./steps";
 
 describe("growthStats — pregnancy weeks", () => {
   it("has no measurements before week 4", () => {
@@ -63,6 +64,51 @@ describe("growthStats — ages", () => {
   });
 });
 
+describe("growthStats — months", () => {
+  it("uses boy medians for a boy", () => {
+    expect(growthStats(monthStep(6), "boy")).toEqual({
+      measure: "length",
+      sizeCm: 67.6,
+      weightG: 7900,
+      heartRate: [100, 160],
+    });
+  });
+
+  it("uses girl medians for a girl", () => {
+    expect(growthStats(monthStep(6), "girl")).toMatchObject({ sizeCm: 65.7, weightG: 7300 });
+  });
+
+  it("averages boy and girl when gender is unknown", () => {
+    expect(growthStats(monthStep(0))).toMatchObject({ sizeCm: 49.5, weightG: 3250 });
+  });
+
+  it("reads the heartbeat of the age the month falls in", () => {
+    expect(growthStats(monthStep(11)).heartRate).toEqual(growthStats(ageStep(0)).heartRate);
+    expect(growthStats(monthStep(12)).heartRate).toEqual(growthStats(ageStep(1)).heartRate);
+  });
+
+  it("matches the age figures at months 0, 12 and 24", () => {
+    for (const [month, age] of [[0, 0], [12, 1], [24, 2]]) {
+      expect(growthStats(monthStep(month), "boy").sizeCm).toBe(growthStats(ageStep(age), "boy").sizeCm);
+      expect(growthStats(monthStep(month), "boy").weightG).toBe(growthStats(ageStep(age), "boy").weightG);
+    }
+  });
+
+  it("is a length until month 23 and a height from month 24", () => {
+    expect(growthStats(monthStep(23)).measure).toBe("length");
+    expect(growthStats(monthStep(24)).measure).toBe("height");
+  });
+});
+
+describe("monthBodySize", () => {
+  it("returns the boy row, the girl row, or their average", () => {
+    expect(monthBodySize(6, "boy")).toEqual({ heightCm: 67.6, weightKg: 7.9 });
+    expect(monthBodySize(6, "girl")).toEqual({ heightCm: 65.7, weightKg: 7.3 });
+    expect(monthBodySize(6).heightCm).toBeCloseTo(66.65, 5);
+    expect(monthBodySize(6).weightKg).toBeCloseTo(7.6, 5);
+  });
+});
+
 describe("babyImagePath", () => {
   it("pads the pregnancy week", () => {
     expect(babyImagePath(weekStep(7), "girl")).toBe("/assets/baby/week-07.svg");
@@ -74,6 +120,12 @@ describe("babyImagePath", () => {
 
   it("uses the neutral image when gender is unknown", () => {
     expect(babyImagePath(ageStep(12))).toBe("/assets/baby/age-12.svg");
+  });
+
+  it("uses the image of the age the month falls in", () => {
+    expect(babyImagePath(monthStep(6))).toBe("/assets/baby/age-00.svg");
+    expect(babyImagePath(monthStep(14), "girl")).toBe("/assets/baby/girl/age-01.svg");
+    expect(babyImagePath(monthStep(24), "boy")).toBe("/assets/baby/boy/age-02.svg");
   });
 });
 

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icon } from "@/components/atoms/Icon";
-import { isSameStep, nextStep, previousStep, stepWindow, type GrowthStep } from "@/features/growth/steps";
+import { isSameStep, nextStep, previousStep, stepWindow, type GrowthStep, type StepKind } from "@/features/growth/steps";
 import type { Dictionary } from "@/features/locale/dictionaries";
 
 export type StepNavigation =
@@ -16,7 +16,12 @@ type StepSelectorProps = {
 };
 
 function stepLabel(step: GrowthStep, dict: Dictionary): string {
-  return step.kind === "week" ? dict.growth.weekLabel : dict.growth.ageLabel;
+  const labels: Record<StepKind, string> = {
+    week: dict.growth.weekLabel,
+    month: dict.growth.monthLabel,
+    age: dict.growth.ageLabel,
+  };
+  return labels[step.kind];
 }
 
 function StepControl({

@@ -9,9 +9,21 @@ import { dialogOpened, type DialogKind } from "@/features/dialogs/dialogSlice";
 import { useLocale } from "@/features/locale/LocaleProvider";
 import { LOCALES, switchLocaleInPath } from "@/features/locale/locales";
 import { rememberLocale } from "@/features/locale/preference";
+import { localePath, VACCINES_PATH } from "@/lib/site";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 const MENU_ID = "app-menu";
+
+const MENU_ITEM =
+  "flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left font-bold text-ink transition-colors hover:bg-brand-soft disabled:opacity-40";
+
+function MenuIcon({ icon }: { icon: IconName }) {
+  return (
+    <span className="grid size-9 place-items-center rounded-xl bg-brand-soft text-brand">
+      <Icon name={icon} />
+    </span>
+  );
+}
 
 function MenuAction({ icon, label, disabled, onClick }: {
   icon: IconName;
@@ -20,18 +32,19 @@ function MenuAction({ icon, label, disabled, onClick }: {
   onClick: () => void;
 }) {
   return (
-    <button
-      type="button"
-      role="menuitem"
-      disabled={disabled}
-      onClick={onClick}
-      className="flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left font-bold text-ink transition-colors hover:bg-brand-soft disabled:opacity-40"
-    >
-      <span className="grid size-9 place-items-center rounded-xl bg-brand-soft text-brand">
-        <Icon name={icon} />
-      </span>
+    <button type="button" role="menuitem" disabled={disabled} onClick={onClick} className={MENU_ITEM}>
+      <MenuIcon icon={icon} />
       {label}
     </button>
+  );
+}
+
+function MenuLink({ icon, label, href, onClick }: { icon: IconName; label: string; href: string; onClick: () => void }) {
+  return (
+    <Link href={href} role="menuitem" onClick={onClick} className={MENU_ITEM}>
+      <MenuIcon icon={icon} />
+      {label}
+    </Link>
   );
 }
 
@@ -78,6 +91,12 @@ export function AppMenu() {
           label={dict.menu.editBaby}
           disabled={babies.length === 0}
           onClick={() => open("edit-baby")}
+        />
+        <MenuLink
+          icon="syringe"
+          label={dict.menu.vaccines}
+          href={localePath(locale, VACCINES_PATH)}
+          onClick={() => menuRef.current?.hidePopover()}
         />
         <div className="mt-1 border-t border-line px-3 pt-3 pb-2">
           <p className="mb-2 flex items-center gap-2 text-sm font-bold text-muted">

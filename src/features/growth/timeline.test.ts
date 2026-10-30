@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estimatedBirthDate, growthProgress, stepForProgress } from "./timeline";
+import { currentPointForProgress, estimatedBirthDate, growthProgress, stepForProgress, stepStartDate } from "./timeline";
 
 describe("estimatedBirthDate", () => {
   it("is 280 days after the last period", () => {
@@ -68,5 +68,57 @@ describe("stepForProgress", () => {
 
   it("caps the age at 18", () => {
     expect(stepForProgress(growthProgress("1990-01-01", "2026-10-27"))).toEqual({ kind: "age", value: 18 });
+  });
+});
+
+describe("currentPointForProgress", () => {
+  it("is the week being lived through while pregnant", () => {
+    expect(currentPointForProgress(growthProgress("2026-04-01", "2026-10-27"))).toEqual({ kind: "week", value: 30 });
+  });
+
+  it("is month 0 on the due date", () => {
+    expect(currentPointForProgress(growthProgress("2026-01-01", "2026-10-08"))).toEqual({ kind: "month", value: 0 });
+  });
+
+  it("is the completed months after birth", () => {
+    expect(currentPointForProgress(growthProgress("2026-01-01", "2027-04-20"))).toEqual({ kind: "month", value: 6 });
+  });
+
+  it("is still month 24 at exactly two years", () => {
+    expect(currentPointForProgress(growthProgress("2026-01-01", "2028-10-08"))).toEqual({ kind: "month", value: 24 });
+  });
+
+  it("switches to the age one month later", () => {
+    expect(currentPointForProgress(growthProgress("2026-01-01", "2028-11-08"))).toEqual({ kind: "age", value: 2 });
+  });
+
+  it("shows the completed years for an older child", () => {
+    expect(currentPointForProgress(growthProgress("2020-01-01", "2026-10-27"))).toEqual({ kind: "age", value: 6 });
+  });
+
+  it("caps the age at 18", () => {
+    expect(currentPointForProgress(growthProgress("1990-01-01", "2026-10-27"))).toEqual({ kind: "age", value: 18 });
+  });
+});
+
+describe("stepStartDate", () => {
+  it("starts week 1 on the last period date", () => {
+    expect(stepStartDate({ kind: "week", value: 1 }, "2026-04-01")).toBe("2026-04-01");
+  });
+
+  it("starts a later week seven days per week after", () => {
+    expect(stepStartDate({ kind: "week", value: 12 }, "2026-04-01")).toBe("2026-06-17");
+  });
+
+  it("starts month 0 on the estimated birth date", () => {
+    expect(stepStartDate({ kind: "month", value: 0 }, "2026-04-01")).toBe("2027-01-06");
+  });
+
+  it("starts a month after the birth date by whole months", () => {
+    expect(stepStartDate({ kind: "month", value: 6 }, "2026-04-01")).toBe("2027-07-06");
+  });
+
+  it("starts an age at twelve months per year", () => {
+    expect(stepStartDate({ kind: "age", value: 2 }, "2026-04-01")).toBe("2029-01-06");
   });
 });

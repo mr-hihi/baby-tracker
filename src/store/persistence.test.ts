@@ -56,6 +56,38 @@ describe("parseSavedBabies", () => {
   });
 });
 
+describe("parseSavedBabies — vaccinations", () => {
+  function parseVaccinations(vaccinations: unknown) {
+    const raw = JSON.stringify({ items: [{ ...bong, vaccinations }], selectedId: "a" });
+    return parseSavedBabies(raw).items;
+  }
+
+  it("keeps recorded dates, including a dose id it does not know", () => {
+    const vaccinations = { bcg: "2027-01-07", "future-dose": "2027-02-01" };
+    expect(parseVaccinations(vaccinations)).toEqual([{ ...bong, vaccinations }]);
+  });
+
+  it("drops entries whose date is not a real date", () => {
+    const items = parseVaccinations({ bcg: "2027-01-07", "opv-1": "2027-13-01", "opv-2": 5, "opv-3": null });
+    expect(items).toEqual([{ ...bong, vaccinations: { bcg: "2027-01-07" } }]);
+  });
+
+  it("drops the field when no entry is left", () => {
+    expect(parseVaccinations({ bcg: "nope" })[0]).not.toHaveProperty("vaccinations");
+    expect(parseVaccinations({})[0]).not.toHaveProperty("vaccinations");
+  });
+
+  it("drops a field that is not an object", () => {
+    for (const bad of ["2027-01-07", 7, null, ["2027-01-07"]]) {
+      expect(parseVaccinations(bad)[0], String(bad)).not.toHaveProperty("vaccinations");
+    }
+  });
+
+  it("keeps a baby saved before vaccinations existed", () => {
+    expect(parseSavedBabies(JSON.stringify({ items: [bong], selectedId: null })).items).toEqual([bong]);
+  });
+});
+
 describe("readSavedBabies / writeSavedBabies", () => {
   it("round-trips through storage", () => {
     const storage = memoryStorage();

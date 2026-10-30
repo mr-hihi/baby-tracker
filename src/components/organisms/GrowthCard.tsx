@@ -6,7 +6,7 @@ import { StatRow } from "@/components/molecules/StatRow";
 import { StepSelector, type StepNavigation } from "@/components/molecules/StepSelector";
 import type { Gender } from "@/features/growth/childhood-years";
 import { babyImagePath, fruitImagePath, growthStats } from "@/features/growth/stats";
-import type { GrowthStep } from "@/features/growth/steps";
+import type { GrowthStep, StepKind } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
 import { fill, formatBeatRange, formatLength, formatWeight } from "@/features/locale/format";
 import type { Locale } from "@/features/locale/locales";
@@ -27,9 +27,17 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
   const { growth } = dict;
   const stats = growthStats(step, gender);
   const isWeek = step.kind === "week";
-  const imageAlt = isWeek
-    ? fill(growth.weekImageAlt, { week: step.value })
-    : fill(growth.ageImageAlt, { age: step.value });
+  const imageAlts: Record<StepKind, string> = {
+    week: growth.weekImageAlt,
+    month: growth.monthImageAlt,
+    age: growth.ageImageAlt,
+  };
+  const figureNotes: Record<StepKind, string> = {
+    week: growth.lengthNote,
+    month: growth.monthNote,
+    age: growth.ageNote,
+  };
+  const imageAlt = fill(imageAlts[step.kind], { [step.kind]: step.value });
   const missing = growth.notYet;
 
   return (
@@ -61,7 +69,7 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
           emphasis="large"
         />
       )}
-      {!isWeek && (
+      {step.kind === "age" && (
         <SizeBadge
           medallion={<AgeMedallion age={step.value} label={growth.ageLabel} />}
           intro={growth.milestoneIntro}
@@ -96,7 +104,7 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
       )}
 
       {(stats.sizeCm !== undefined || !isWeek) && (
-        <p className="mt-3 px-2 text-xs text-muted">{isWeek ? growth.lengthNote : growth.ageNote}</p>
+        <p className="mt-3 px-2 text-xs text-muted">{figureNotes[step.kind]}</p>
       )}
 
       {children}

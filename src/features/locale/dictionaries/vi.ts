@@ -1,4 +1,8 @@
+import type { CareItemId } from "@/features/care/care-items";
 import type { Fruit } from "@/features/growth/pregnancy-weeks";
+import type { Vaccine, VaccineDoseId } from "@/features/vaccinations/vaccine-doses";
+
+export type CareItemText = { title: string; detail: string };
 
 export type PluralForms = { one: string; other: string };
 
@@ -14,6 +18,12 @@ export const vi = {
     weekDescription: "Tuần thai thứ {week}: {note}",
     ageTitle: "Bé {age} tuổi: chiều cao, cân nặng và mốc phát triển",
     ageDescription: "Bé {age} tuổi: {milestone} Chiều cao trung bình {boyHeight} (trai), {girlHeight} (gái).",
+    monthTitle: "Bé {month} tháng: chiều dài, cân nặng và chăm sóc",
+    monthDescription:
+      "Bé {month} tháng tuổi: chiều dài/cao trung bình {boySize} (trai), {girlSize} (gái); tiêm chủng, vitamin và ăn uống.",
+    vaccinesTitle: "Lịch tiêm chủng mở rộng cho mẹ bầu và bé",
+    vaccinesDescription:
+      "Lịch các mũi tiêm chủng mở rộng (TCMR) cho mẹ khi mang thai và cho bé đến 24 tháng; đánh dấu mũi đã tiêm cho từng bé.",
     chooserTitle: "Bé lớn từng ngày · Baby Day by Day",
   },
   menu: {
@@ -22,6 +32,7 @@ export const vi = {
     addBaby: "Thêm em bé",
     chooseBaby: "Chọn em bé",
     editBaby: "Sửa thông tin bé",
+    vaccines: "Lịch tiêm chủng",
     language: "Ngôn ngữ",
   },
   form: {
@@ -65,6 +76,7 @@ export const vi = {
   } satisfies Record<string, PluralForms>,
   growth: {
     weekLabel: "Tuần",
+    monthLabel: "Tháng",
     ageLabel: "Tuổi",
     previous: "Mốc trước",
     next: "Mốc sau",
@@ -79,19 +91,23 @@ export const vi = {
     notYet: "Chưa đo được",
     lessThanOneGram: "dưới 1 g",
     weekImageAlt: "Hình minh hoạ thai nhi tuần thứ {week}",
+    monthImageAlt: "Minh hoạ bé {month} tháng tuổi",
     ageImageAlt: "Hình minh hoạ bé {age} tuổi",
     fruitImageAlt: "Hình {fruit}",
     lengthNote: "Đến tuần 19 đo từ đỉnh đầu tới mông; từ tuần 20 đo từ đỉnh đầu tới gót chân.",
+    monthNote: "Chiều dài, cân nặng là trung vị tham khảo của WHO.",
     ageNote: "Chiều cao và cân nặng là trung vị tham khảo của WHO/CDC.",
     boyValue: "Trai",
     girlValue: "Gái",
   },
   guide: {
     weekHeading: "Tuần thai thứ {week}",
+    monthHeading: "Tháng thứ {month}",
     ageHeading: "Bé {age} tuổi",
     trackCta: "Theo dõi bé của bạn",
     breadcrumbHome: "Trang chủ",
     breadcrumbWeeks: "Thai kỳ",
+    breadcrumbMonths: "Từng tháng",
     breadcrumbAges: "Lớn khôn",
   },
   journey: {
@@ -99,8 +115,10 @@ export const vi = {
     intro:
       "Nhập ngày đầu kỳ kinh cuối, ứng dụng tự tính bé đang ở tuần thai nào, ngày dự sinh, và sau khi chào đời là bé bao nhiêu tuổi. Mọi dữ liệu chỉ lưu trong trình duyệt của bạn.",
     weeksHeading: "40 tuần thai kỳ",
+    monthsHeading: "Từng tháng",
     agesHeading: "Từ 0 đến 18 tuổi",
     weekLink: "Tuần {n}",
+    monthLink: "Tháng {n}",
     ageLink: "{n} tuổi",
   },
   chooser: {
@@ -211,6 +229,96 @@ export const vi = {
     "Bé chuẩn bị cho kỳ thi lớn và những lựa chọn quan trọng.",
     "Bé tròn 18 tuổi — chính thức trưởng thành!",
   ],
+  care: {
+    heading: "Chăm sóc",
+    groups: { supplement: "Bổ sung", eat: "Nên ăn", avoid: "Nên kiêng" },
+    newBadge: { week: "Mới tuần này", month: "Mới tháng này", age: "Mới năm nay" },
+    sources: { moh: "Bộ Y tế", who: "WHO" },
+    subjects: { mother: "Cho mẹ", baby: "Cho bé" },
+  },
+  careItems: {
+    "folic-acid": { title: "Axit folic", detail: "Axit folic 400 mcg mỗi ngày" },
+    "iron-folic-acid": { title: "Sắt và axit folic", detail: "Sắt 30–60 mg và axit folic 400 mcg mỗi ngày" },
+    calcium: { title: "Canxi", detail: "Canxi 1.500–2.000 mg mỗi ngày, chia nhiều lần, uống cách xa viên sắt" },
+    "varied-meals": { title: "Ăn đa dạng", detail: "Ăn đa dạng: cơm, thịt, cá, trứng, đậu, rau xanh, trái cây" },
+    "small-meals": { title: "Chia nhỏ bữa ăn", detail: "Chia nhỏ bữa, ăn nhiều lần khi buồn nôn; uống đủ nước" },
+    "fibre-water": { title: "Chất xơ và nước", detail: "Ăn nhiều chất xơ và uống 2 lít nước mỗi ngày để tránh táo bón" },
+    "no-alcohol-smoking": { title: "Rượu bia và thuốc lá", detail: "Không rượu bia, không hút thuốc, tránh khói thuốc" },
+    "no-raw-food": {
+      title: "Đồ sống, tái",
+      detail: "Không ăn thịt, cá, trứng sống hoặc tái; không dùng sữa, phô mai chưa tiệt trùng",
+    },
+    "limit-caffeine": { title: "Cà phê, trà đặc", detail: "Caffeine dưới 300 mg mỗi ngày" },
+    "mother-vitamin-a": { title: "Vitamin A cho mẹ", detail: "Vitamin A 200.000 IU một lần trong tháng đầu sau sinh" },
+    "mother-iron": { title: "Sắt cho mẹ", detail: "Sắt 30–60 mg và axit folic 400 mcg mỗi ngày đến 1 tháng sau sinh" },
+    "mother-no-alcohol": { title: "Rượu bia khi cho con bú", detail: "Không uống rượu bia khi đang cho con bú" },
+    "exclusive-breastfeeding": { title: "Bú mẹ hoàn toàn", detail: "Chỉ bú sữa mẹ, bú theo nhu cầu cả ngày lẫn đêm" },
+    "no-water-before-6m": {
+      title: "Nước và đồ ăn khác",
+      detail: "Không cho uống nước, nước trái cây hay ăn thức ăn khác trước 6 tháng",
+    },
+    "start-solids": { title: "Bắt đầu ăn dặm", detail: "Bắt đầu với bột, cháo loãng 2–3 bữa mỗi ngày; vẫn cho bú mẹ" },
+    "mashed-meals": { title: "Thức ăn nghiền", detail: "3–4 bữa thức ăn nghiền hoặc băm nhỏ mỗi ngày" },
+    "family-food": {
+      title: "Ăn cùng gia đình",
+      detail: "Ăn cơm gia đình 3–4 bữa và 1–2 bữa phụ mỗi ngày; bú mẹ đến 24 tháng",
+    },
+    "baby-vitamin-a": {
+      title: "Vitamin A",
+      detail: "Uống vitamin A vào ngày chiến dịch (1/6, 1/12): 100.000 IU khi 6–11 tháng, 200.000 IU từ 12 tháng",
+    },
+    "no-salt-sugar": { title: "Muối và đường", detail: "Không nêm thêm muối, đường; không cho uống nước ngọt" },
+    "vitamin-a-to-36m": { title: "Vitamin A", detail: "Vitamin A 200.000 IU mỗi 6 tháng đến khi bé 36 tháng" },
+    "varied-child-diet": { title: "Ăn đa dạng", detail: "Bữa ăn đa dạng, có rau và trái cây mỗi ngày" },
+    "no-sugary-drinks": { title: "Đồ ngọt", detail: "Hạn chế nước ngọt và đồ ăn vặt nhiều đường" },
+  } satisfies Record<CareItemId, CareItemText>,
+  vaccination: {
+    heading: "Tiêm chủng",
+    headingForBaby: "Tiêm chủng · {name}",
+    atStep: "Mũi ở mốc này",
+    notYetGiven: "Mũi chưa tiêm",
+    doseLabel: "Mũi {n}",
+    booster: "Mũi nhắc",
+    given: "Đã tiêm",
+    statusDone: "Đã tiêm ngày {date}",
+    statusUpcoming: "Dự kiến {date}",
+    statusDue: "Đến hạn",
+    statusOverdue: "Quá hạn — tiêm bù",
+    scheduledFor: "Lịch tiêm {date}",
+    changeDate: "Đổi ngày",
+    dateLabel: "Ngày tiêm",
+    nextDose: "Mũi tiếp theo: {vaccine} — khoảng {date}",
+    allDone: "Đã ghi nhận đủ các mũi",
+    fullSchedule: "Xem lịch tiêm đầy đủ",
+    scheduleHeading: "Lịch tiêm chủng",
+    source: "Chương trình Tiêm chủng mở rộng — Bộ Y tế",
+    milestonePregnancy: "Mang thai",
+    milestoneBirth: "Sơ sinh",
+    milestoneMonths: "{n} tháng",
+    dateRequired: "Hãy chọn ngày.",
+    dateInFuture: "Ngày tiêm không được ở tương lai.",
+    dateBeforeLastPeriod: "Ngày tiêm không được trước ngày đầu kỳ kinh cuối.",
+  },
+  vaccines: {
+    tetanus: "Uốn ván",
+    hepb: "Viêm gan B",
+    bcg: "Lao (BCG)",
+    "dtp-hepb-hib": "Bạch hầu-Ho gà-Uốn ván-Viêm gan B-Hib (5 trong 1)",
+    opv: "Bại liệt uống",
+    ipv: "Bại liệt tiêm",
+    measles: "Sởi",
+    je: "Viêm não Nhật Bản",
+    dtp: "Bạch hầu-Ho gà-Uốn ván",
+    mr: "Sởi-Rubella",
+  } satisfies Record<Vaccine, string>,
+  doseNotes: {
+    "tetanus-1": "Lần mang thai đầu; nếu đã tiêm trước đây, hỏi trạm y tế",
+    "tetanus-2": "Cách mũi 1 ít nhất 4 tuần và trước sinh ít nhất 4 tuần",
+    "hepb-birth": "Trong 24 giờ sau sinh",
+    bcg: "Trong tháng đầu",
+    "je-2": "1–2 tuần sau mũi 1",
+    "je-3": "1 năm sau mũi 2",
+  } satisfies Partial<Record<VaccineDoseId, string>>,
 };
 
 export type Dictionary = typeof vi;

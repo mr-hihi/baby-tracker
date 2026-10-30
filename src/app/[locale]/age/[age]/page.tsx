@@ -6,16 +6,19 @@ import { Icon } from "@/components/atoms/Icon";
 import { JsonLd } from "@/components/atoms/JsonLd";
 import { AgeComparison } from "@/components/molecules/AgeComparison";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
+import { CareSection } from "@/components/organisms/CareSection";
 import { GrowthCard } from "@/components/organisms/GrowthCard";
 import { JourneyIndex } from "@/components/organisms/JourneyIndex";
+import { MonthLinks } from "@/components/organisms/MonthLinks";
+import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
 import { bodySize } from "@/features/growth/childhood-years";
-import { ageStep, MAX_AGE, type GrowthStep } from "@/features/growth/steps";
+import { ageStep, MAX_AGE, monthsInAge, type GrowthStep } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
 import { fill, formatLength } from "@/features/locale/format";
 import { isLocale } from "@/features/locale/locales";
 import { breadcrumbLd, pageMetadata } from "@/features/seo/metadata";
-import { agePath, localePath, weekPath } from "@/lib/site";
+import { agePath, localePath, stepPath } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -49,9 +52,10 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/age/[age
 export default async function AgePage({ params }: PageProps<"/[locale]/age/[age]">) {
   const { locale, age } = await resolve(params);
   const dict = getDictionary(locale);
+  const step = ageStep(age);
+  const months = monthsInAge(age);
   const heading = fill(dict.guide.ageHeading, { age });
-  const hrefFor = (step: GrowthStep) =>
-    localePath(locale, step.kind === "week" ? weekPath(step.value) : agePath(step.value));
+  const hrefFor = (target: GrowthStep) => localePath(locale, stepPath(target));
   const crumbs = [
     { name: dict.guide.breadcrumbHome, path: localePath(locale) },
     { name: dict.guide.breadcrumbAges, path: localePath(locale, agePath(0)) },
@@ -69,10 +73,20 @@ export default async function AgePage({ params }: PageProps<"/[locale]/age/[age]
       />
       <h1 className="mt-2 mb-1 text-2xl font-extrabold">{heading}</h1>
       <p className="mb-5 text-muted">{dict.ageMilestones[age]}</p>
-      <GrowthCard step={ageStep(age)} locale={locale} navigation={{ mode: "link", hrefFor }} preloadImage />
+      <GrowthCard step={step} locale={locale} navigation={{ mode: "link", hrefFor }} preloadImage />
       <div className="mt-6">
-        <AgeComparison age={age} locale={locale} dict={dict} />
+        <AgeComparison step={step} locale={locale} dict={dict} />
       </div>
+      {months.length > 0 ? (
+        <div className="mt-6">
+          <MonthLinks id="age-months" months={months} locale={locale} dict={dict} />
+        </div>
+      ) : (
+        <>
+          <CareSection step={step} dict={dict} />
+          <VaccineSection step={step} />
+        </>
+      )}
       <div className="mt-6 flex justify-center">
         <Link href={localePath(locale)} className={buttonClass("primary")}>
           {dict.guide.trackCta}

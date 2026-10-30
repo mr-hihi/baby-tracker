@@ -5,8 +5,10 @@ import { buttonClass } from "@/components/atoms/Button";
 import { Icon } from "@/components/atoms/Icon";
 import { JsonLd } from "@/components/atoms/JsonLd";
 import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
+import { CareSection } from "@/components/organisms/CareSection";
 import { GrowthCard } from "@/components/organisms/GrowthCard";
 import { JourneyIndex } from "@/components/organisms/JourneyIndex";
+import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
 import { weekFacts } from "@/features/growth/pregnancy-weeks";
 import { PREGNANCY_WEEKS, weekStep, type GrowthStep } from "@/features/growth/steps";
@@ -14,7 +16,7 @@ import { getDictionary } from "@/features/locale/dictionaries";
 import { fill } from "@/features/locale/format";
 import { isLocale, type Locale } from "@/features/locale/locales";
 import { breadcrumbLd, pageMetadata } from "@/features/seo/metadata";
-import { agePath, localePath, weekPath } from "@/lib/site";
+import { localePath, stepPath, weekPath } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -52,8 +54,8 @@ export default async function WeekPage({ params }: PageProps<"/[locale]/week/[we
   const { locale, week } = await resolve(params);
   const dict = getDictionary(locale);
   const heading = fill(dict.guide.weekHeading, { week });
-  const hrefFor = (step: GrowthStep) =>
-    localePath(locale, step.kind === "week" ? weekPath(step.value) : agePath(step.value));
+  const step = weekStep(week);
+  const hrefFor = (target: GrowthStep) => localePath(locale, stepPath(target));
   const crumbs = [
     { name: dict.guide.breadcrumbHome, path: localePath(locale) },
     { name: dict.guide.breadcrumbWeeks, path: localePath(locale, weekPath(1)) },
@@ -71,7 +73,9 @@ export default async function WeekPage({ params }: PageProps<"/[locale]/week/[we
       />
       <h1 className="mt-2 mb-1 text-2xl font-extrabold">{heading}</h1>
       <p className="mb-5 text-muted">{weekTitle(locale, week)}</p>
-      <GrowthCard step={weekStep(week)} locale={locale} navigation={{ mode: "link", hrefFor }} preloadImage />
+      <GrowthCard step={step} locale={locale} navigation={{ mode: "link", hrefFor }} preloadImage />
+      <CareSection step={step} dict={dict} />
+      <VaccineSection step={step} />
       <div className="mt-6 flex justify-center">
         <Link href={localePath(locale)} className={buttonClass("primary")}>
           {dict.guide.trackCta}

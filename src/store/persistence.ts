@@ -17,11 +17,19 @@ function isBaby(value: unknown): value is Baby {
   );
 }
 
+function dropInvalidVaccinations(baby: Baby): Baby {
+  const { vaccinations, ...rest } = baby;
+  const stored: unknown = vaccinations;
+  if (typeof stored !== "object" || stored === null || Array.isArray(stored)) return rest;
+  const valid = Object.entries(stored).filter(([, date]) => typeof date === "string" && isIsoDate(date));
+  return valid.length > 0 ? { ...rest, vaccinations: Object.fromEntries(valid) } : rest;
+}
+
 export function parseSavedBabies(raw: string | null): SavedBabies {
   if (!raw) return EMPTY;
   try {
     const data = JSON.parse(raw) as Partial<SavedBabies>;
-    const items = Array.isArray(data.items) ? data.items.filter(isBaby) : [];
+    const items = Array.isArray(data.items) ? data.items.filter(isBaby).map(dropInvalidVaccinations) : [];
     const selectedId = typeof data.selectedId === "string" ? data.selectedId : null;
     return { items, selectedId };
   } catch {

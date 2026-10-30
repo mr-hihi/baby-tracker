@@ -41,6 +41,25 @@ describe("paths", () => {
   });
 });
 
+describe("monthPath / stepPath", () => {
+  it("builds the month path", async () => {
+    const site = await loadSite({});
+    expect(site.monthPath(6)).toBe("month/6/");
+  });
+
+  it("builds the path of every step kind", async () => {
+    const site = await loadSite({});
+    expect(site.stepPath({ kind: "week", value: 12 })).toBe("week/12/");
+    expect(site.stepPath({ kind: "month", value: 6 })).toBe("month/6/");
+    expect(site.stepPath({ kind: "age", value: 3 })).toBe("age/3/");
+  });
+
+  it("exposes the vaccines path", async () => {
+    const site = await loadSite({});
+    expect(site.localePath("vi", site.VACCINES_PATH)).toBe("/vi/vaccines/");
+  });
+});
+
 describe("languageAlternates", () => {
   it("points x-default at the chooser for the home page", async () => {
     const site = await loadSite({ NEXT_PUBLIC_SITE_URL: "https://x.io" });

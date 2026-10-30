@@ -4,7 +4,7 @@
 
 | State | Owner | Where |
 |---|---|---|
-| Babies, selected baby, loaded flag | Redux `babies` slice | `src/features/babies/babiesSlice.ts` |
+| Babies (with vaccination records), selected baby, loaded flag | Redux `babies` slice | `src/features/babies/babiesSlice.ts` |
 | Which dialog is open | Redux `dialog` slice | `src/features/dialogs/dialogSlice.ts` |
 | Locale | URL segment | `[locale]` + `LocaleProvider` |
 | Step being browsed, form errors, today | Local `useState` | the component |
@@ -18,7 +18,8 @@
 - `Providers` (`src/app/providers.tsx`) loads once after mount (`babiesLoaded(readSavedBabies())`) and then writes on every change of `state.babies`.
 - **Critical:** components must handle `loaded === false` (render a skeleton) — prerendered HTML never has babies.
 - `selectSelectedBaby` falls back to the first baby when `selectedId` is missing.
-- Shape on disk: `{ items: Baby[], selectedId: string | null }` under `baby-tracker:v1`.
+- Shape on disk: `{ items: Baby[], selectedId: string | null }` under `baby-tracker:v1`; `Baby.vaccinations` is an optional `Record<doseId, IsoDate>`.
+- **Critical:** updating a baby from the form keeps its `vaccinations`; only the vaccination actions change them.
 
 ## Rules
 

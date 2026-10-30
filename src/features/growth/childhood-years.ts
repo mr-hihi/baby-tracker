@@ -36,11 +36,19 @@ const RESTING_HEART: [maxAge: number, range: BeatRange][] = [
   [Infinity, [60, 100]],
 ];
 
+export function sizeForGender(boy: BodySize, girl: BodySize, gender?: Gender): BodySize {
+  if (gender === "boy") return boy;
+  if (gender === "girl") return girl;
+  return { heightCm: (boy.heightCm + girl.heightCm) / 2, weightKg: (boy.weightKg + girl.weightKg) / 2 };
+}
+
 export function bodySize(age: number, gender?: Gender): BodySize {
   const [, boyHeight, boyWeight, girlHeight, girlWeight] = MEDIANS[age];
-  if (gender === "boy") return { heightCm: boyHeight, weightKg: boyWeight };
-  if (gender === "girl") return { heightCm: girlHeight, weightKg: girlWeight };
-  return { heightCm: (boyHeight + girlHeight) / 2, weightKg: (boyWeight + girlWeight) / 2 };
+  return sizeForGender(
+    { heightCm: boyHeight, weightKg: boyWeight },
+    { heightCm: girlHeight, weightKg: girlWeight },
+    gender,
+  );
 }
 
 export function restingHeartRate(age: number): BeatRange {
