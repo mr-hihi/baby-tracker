@@ -8,9 +8,10 @@ import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 import { CareSection } from "@/components/organisms/CareSection";
 import { GrowthCard } from "@/components/organisms/GrowthCard";
 import { JourneyIndex } from "@/components/organisms/JourneyIndex";
+import { PrenatalTestSection } from "@/components/organisms/PrenatalTestSection";
 import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
-import { weekFacts } from "@/features/growth/pregnancy-weeks";
+import { completedWeeksOn, weekFacts } from "@/features/growth/pregnancy-weeks";
 import { PREGNANCY_WEEKS, weekStep, type GrowthStep } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
 import { fill } from "@/features/locale/format";
@@ -34,9 +35,10 @@ async function resolve(params: PageProps<"/[locale]/week/[week]">["params"]) {
 function weekTitle(locale: Locale, week: number): string {
   const dict = getDictionary(locale);
   const { fruit } = weekFacts(week);
+  const weeks = completedWeeksOn(week);
   return fruit
-    ? fill(dict.meta.weekTitle, { week, fruit: dict.fruits[fruit] })
-    : fill(dict.meta.weekTitlePlain, { week });
+    ? fill(dict.meta.weekTitle, { weeks, fruit: dict.fruits[fruit] })
+    : fill(dict.meta.weekTitlePlain, { weeks });
 }
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/week/[week]">): Promise<Metadata> {
@@ -76,6 +78,7 @@ export default async function WeekPage({ params }: PageProps<"/[locale]/week/[we
       <GrowthCard step={step} locale={locale} navigation={{ mode: "link", hrefFor }} preloadImage />
       <CareSection step={step} dict={dict} />
       <VaccineSection step={step} />
+      <PrenatalTestSection week={week} />
       <div className="mt-6 flex justify-center">
         <Link href={localePath(locale)} className={buttonClass("primary")}>
           {dict.guide.trackCta}

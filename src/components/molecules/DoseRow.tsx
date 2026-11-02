@@ -6,7 +6,7 @@ import type { VaccineDose } from "@/features/vaccinations/vaccine-doses";
 export function DoseRow({ dose, dict, children }: { dose: VaccineDose; dict: Dictionary; children?: ReactNode }) {
   const { vaccine, doseLabel, note } = describeDose(dose, dict);
   return (
-    <li className="rounded-2xl bg-page px-4 py-3">
+    <li className="rounded-2xl bg-page px-3 py-2">
       <p className="font-bold">
         {vaccine} <span className="font-normal text-muted">· {doseLabel}</span>
       </p>

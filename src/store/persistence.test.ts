@@ -88,6 +88,38 @@ describe("parseSavedBabies — vaccinations", () => {
   });
 });
 
+describe("parseSavedBabies — prenatal tests", () => {
+  function parsePrenatalTests(prenatalTests: unknown) {
+    const raw = JSON.stringify({ items: [{ ...bong, prenatalTests }], selectedId: "a" });
+    return parseSavedBabies(raw).items;
+  }
+
+  it("keeps recorded dates, including a test id it does not know", () => {
+    const prenatalTests = { nipt: "2026-06-12", "retired-test": "2026-06-20" };
+    expect(parsePrenatalTests(prenatalTests)).toEqual([{ ...bong, prenatalTests }]);
+  });
+
+  it("drops entries whose date is not a real date", () => {
+    expect(parsePrenatalTests({ nipt: "not-a-date", other: "2026-06-12" })).toEqual([
+      { ...bong, prenatalTests: { other: "2026-06-12" } },
+    ]);
+  });
+
+  it("drops the field when no entry is left or it is not an object", () => {
+    for (const bad of [{ nipt: "nope" }, {}, "2026-06-12", null, ["2026-06-12"]]) {
+      expect(parsePrenatalTests(bad)[0], JSON.stringify(bad)).not.toHaveProperty("prenatalTests");
+    }
+  });
+
+  it("checks vaccinations and prenatal tests on their own", () => {
+    const raw = JSON.stringify({
+      items: [{ ...bong, vaccinations: { bcg: "nope" }, prenatalTests: { nipt: "2026-06-12" } }],
+      selectedId: "a",
+    });
+    expect(parseSavedBabies(raw).items).toEqual([{ ...bong, prenatalTests: { nipt: "2026-06-12" } }]);
+  });
+});
+
 describe("readSavedBabies / writeSavedBabies", () => {
   it("round-trips through storage", () => {
     const storage = memoryStorage();

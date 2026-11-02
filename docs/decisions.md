@@ -15,5 +15,5 @@
 | Growth figures are reference tables | No personal measurements are stored | Always show the disclaimer; label figures as reference |
 | Month pages 0–24 are guide pages outside the timeline | Keeps the 59-step timeline and the locked week numbering | Don't add months to `GROWTH_STEPS` without updating `timeline.test.ts` and `business/1-baby-progress.md` |
 | Care and vaccine advice is reference content with a named source | Requirement: doses shown, but no personal medical advice | Every item names its source; verify against current Ministry of Health / WHO guidance before release; keep the disclaimer |
-| Vaccination records live on `Baby.vaccinations` inside `baby-tracker:v1` | Optional field: old saved data still parses, records travel with the baby | Validate entries on read; editing a baby keeps `vaccinations`; a breaking change still gets a new key |
+| Vaccination and prenatal test records live on `Baby.vaccinations` and `Baby.prenatalTests` inside `baby-tracker:v1` | Optional fields: old saved data still parses, records travel with the baby | Validate entries on read; editing a baby keeps both fields; a breaking change still gets a new key |
 | Hand-rolled form (`FormData` + `validateBabyForm`) | One small form; a forms library adds weight for nothing | Add a forms library only when a second non-trivial form appears |

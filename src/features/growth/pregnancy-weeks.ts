@@ -37,31 +37,51 @@ export const FRUITS = [
   "leek",
   "mini-watermelon",
   "pumpkin",
-  "watermelon",
 ] as const;
 
 export type Fruit = (typeof FRUITS)[number];
 
+export type LengthMethod = "crown-rump" | "crown-heel";
+
 export type WeekFacts = {
+  lengthMethod: LengthMethod;
   fruit?: Fruit;
   lengthCm?: number;
   weightG?: number;
+  estimated?: boolean;
   heartRate?: BeatRange;
 };
 
-const FETAL_HEART: BeatRange = [120, 160];
-const FIRST_FRUIT_WEEK = 4;
+type FetalSize = { lengthCm: number; weightG: number };
 
-const MEASUREMENTS: Record<number, Omit<WeekFacts, "fruit">> = {
+const FETAL_HEART: BeatRange = [120, 160];
+const FETAL_HEART_FROM_WEEK = 13;
+const FIRST_SIZED_WEEKS = 4;
+const CROWN_HEEL_FROM_WEEKS = 20;
+
+const EARLY_HEART: Record<number, BeatRange> = {
+  6: [100, 120],
+  7: [120, 160],
+  8: [140, 170],
+  9: [150, 175],
+  10: [155, 180],
+  11: [150, 175],
+  12: [140, 170],
+};
+
+const ESTIMATED_SIZES: Record<number, FetalSize> = {
   4: { lengthCm: 0.1, weightG: 0.1 },
   5: { lengthCm: 0.2, weightG: 0.1 },
-  6: { lengthCm: 0.5, weightG: 0.2, heartRate: [100, 120] },
-  7: { lengthCm: 1.0, weightG: 0.5, heartRate: [120, 160] },
-  8: { lengthCm: 1.6, weightG: 1, heartRate: [140, 170] },
-  9: { lengthCm: 2.3, weightG: 2, heartRate: [150, 175] },
-  10: { lengthCm: 3.1, weightG: 4, heartRate: [155, 180] },
-  11: { lengthCm: 4.1, weightG: 7, heartRate: [150, 175] },
-  12: { lengthCm: 5.4, weightG: 14, heartRate: [140, 170] },
+  6: { lengthCm: 0.5, weightG: 0.2 },
+  7: { lengthCm: 1.0, weightG: 0.5 },
+};
+
+const SIZES: Record<number, FetalSize> = {
+  8: { lengthCm: 1.6, weightG: 1 },
+  9: { lengthCm: 2.3, weightG: 2 },
+  10: { lengthCm: 3.1, weightG: 4 },
+  11: { lengthCm: 4.1, weightG: 7 },
+  12: { lengthCm: 5.4, weightG: 14 },
   13: { lengthCm: 7.4, weightG: 23 },
   14: { lengthCm: 8.7, weightG: 43 },
   15: { lengthCm: 10.1, weightG: 70 },
@@ -69,37 +89,44 @@ const MEASUREMENTS: Record<number, Omit<WeekFacts, "fruit">> = {
   17: { lengthCm: 13.0, weightG: 140 },
   18: { lengthCm: 14.2, weightG: 190 },
   19: { lengthCm: 15.3, weightG: 240 },
-  20: { lengthCm: 25.6, weightG: 300 },
-  21: { lengthCm: 26.7, weightG: 360 },
-  22: { lengthCm: 27.8, weightG: 430 },
-  23: { lengthCm: 28.9, weightG: 501 },
-  24: { lengthCm: 30.0, weightG: 600 },
-  25: { lengthCm: 34.6, weightG: 660 },
-  26: { lengthCm: 35.6, weightG: 760 },
-  27: { lengthCm: 36.6, weightG: 875 },
-  28: { lengthCm: 37.6, weightG: 1005 },
-  29: { lengthCm: 38.6, weightG: 1153 },
-  30: { lengthCm: 39.9, weightG: 1319 },
-  31: { lengthCm: 41.1, weightG: 1502 },
-  32: { lengthCm: 42.4, weightG: 1702 },
-  33: { lengthCm: 43.7, weightG: 1918 },
-  34: { lengthCm: 45.0, weightG: 2146 },
-  35: { lengthCm: 46.2, weightG: 2383 },
-  36: { lengthCm: 47.4, weightG: 2622 },
-  37: { lengthCm: 48.6, weightG: 2859 },
-  38: { lengthCm: 49.8, weightG: 3083 },
-  39: { lengthCm: 50.7, weightG: 3288 },
-  40: { lengthCm: 51.2, weightG: 3462 },
+  20: { lengthCm: 25.7, weightG: 330 },
+  21: { lengthCm: 27.4, weightG: 400 },
+  22: { lengthCm: 29.0, weightG: 476 },
+  23: { lengthCm: 30.6, weightG: 565 },
+  24: { lengthCm: 32.2, weightG: 665 },
+  25: { lengthCm: 33.7, weightG: 756 },
+  26: { lengthCm: 35.1, weightG: 900 },
+  27: { lengthCm: 36.6, weightG: 1000 },
+  28: { lengthCm: 37.6, weightG: 1100 },
+  29: { lengthCm: 39.3, weightG: 1239 },
+  30: { lengthCm: 40.5, weightG: 1396 },
+  31: { lengthCm: 41.8, weightG: 1568 },
+  32: { lengthCm: 43.0, weightG: 1755 },
+  33: { lengthCm: 44.1, weightG: 2000 },
+  34: { lengthCm: 45.3, weightG: 2200 },
+  35: { lengthCm: 46.3, weightG: 2378 },
+  36: { lengthCm: 47.3, weightG: 2600 },
+  37: { lengthCm: 48.3, weightG: 2800 },
+  38: { lengthCm: 49.3, weightG: 3000 },
+  39: { lengthCm: 50.1, weightG: 3186 },
 };
 
-export const CROWN_TO_HEEL_FROM_WEEK = 20;
+export function completedWeeksOn(week: number): number {
+  return week - 1;
+}
 
 export function weekFacts(week: number): WeekFacts {
-  const measured = MEASUREMENTS[week];
-  if (!measured) return {};
+  const completedWeeks = completedWeeksOn(week);
+  const lengthMethod = completedWeeks < CROWN_HEEL_FROM_WEEKS ? "crown-rump" : "crown-heel";
+  const heartRate = week >= FETAL_HEART_FROM_WEEK ? FETAL_HEART : EARLY_HEART[week];
+  const estimate = ESTIMATED_SIZES[completedWeeks];
+  const size = estimate ?? SIZES[completedWeeks];
+  if (!size) return { lengthMethod, heartRate };
   return {
-    fruit: FRUITS[week - FIRST_FRUIT_WEEK],
-    heartRate: week >= 13 ? FETAL_HEART : undefined,
-    ...measured,
+    lengthMethod,
+    fruit: FRUITS[completedWeeks - FIRST_SIZED_WEEKS],
+    estimated: estimate !== undefined,
+    heartRate,
+    ...size,
   };
 }

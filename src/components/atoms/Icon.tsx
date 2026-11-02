@@ -16,6 +16,7 @@ const PATHS = {
   sparkle: "M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3z",
   arrowRight: "M5 12h14M13 6l6 6-6 6",
   syringe: "M18 2l4 4M20 4l-3 3M15 4l5 5M18 7l-9 9H5v-4l9-9M11 8l2 2M8 11l2 2M5 19l-3 3",
+  testTube: "M8 3h8M10 3v14a2 2 0 004 0V3M10 11h4",
 } as const;
 
 export type IconName = keyof typeof PATHS;

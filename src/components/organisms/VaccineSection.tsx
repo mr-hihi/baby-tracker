@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { DoseRow } from "@/components/molecules/DoseRow";
+import { ScheduleCard } from "@/components/molecules/ScheduleCard";
 import { selectBabiesLoaded, selectSelectedBaby, type Baby } from "@/features/babies/babiesSlice";
 import type { GrowthStep } from "@/features/growth/steps";
 import { currentPointForProgress, growthProgress } from "@/features/growth/timeline";
@@ -18,18 +18,14 @@ import { DoseRecordControl } from "./DoseRecordControl";
 function SectionFrame({ heading, children }: { heading: string; children: ReactNode }) {
   const { locale, dict } = useLocale();
   return (
-    <section aria-labelledby="vaccines-heading" className="mt-6 rounded-[2rem] bg-surface p-5 shadow-card">
-      <h2 id="vaccines-heading" className="text-xl font-extrabold">
-        {heading}
-      </h2>
+    <ScheduleCard
+      headingId="vaccines-heading"
+      heading={heading}
+      scheduleHref={localePath(locale, VACCINES_PATH)}
+      scheduleLabel={dict.vaccination.fullSchedule}
+    >
       {children}
-      <Link
-        href={localePath(locale, VACCINES_PATH)}
-        className="mt-4 inline-block text-sm font-bold text-brand underline-offset-2 hover:underline"
-      >
-        {dict.vaccination.fullSchedule}
-      </Link>
-    </section>
+    </ScheduleCard>
   );
 }
 
@@ -42,11 +38,11 @@ function DoseList({ id, title, doses, controlFor }: {
   const { dict } = useLocale();
   if (doses.length === 0) return null;
   return (
-    <section aria-labelledby={id} className="mt-4">
+    <section aria-labelledby={id} className="py-3 last:pb-0">
       <h3 id={id} className="text-sm font-bold text-muted">
         {title}
       </h3>
-      <ul className="mt-2 flex flex-col gap-2">
+      <ul className="mt-1.5 flex flex-col gap-1.5">
         {doses.map((dose) => (
           <DoseRow key={dose.id} dose={dose} dict={dict}>
             {controlFor?.(dose)}

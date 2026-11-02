@@ -1,7 +1,16 @@
 import type { MetadataRoute } from "next";
 import { MAX_AGE, MAX_MONTH, PREGNANCY_WEEKS } from "@/features/growth/steps";
 import { LOCALES } from "@/features/locale/locales";
-import { absoluteUrl, agePath, languageAlternates, localePath, monthPath, VACCINES_PATH, weekPath } from "@/lib/site";
+import {
+  absoluteUrl,
+  agePath,
+  languageAlternates,
+  localePath,
+  monthPath,
+  PRENATAL_TESTS_PATH,
+  VACCINES_PATH,
+  weekPath,
+} from "@/lib/site";
 
 export const dynamic = "force-static";
 
@@ -12,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...Array.from({ length: MAX_MONTH + 1 }, (_, i) => monthPath(i)),
     ...Array.from({ length: MAX_AGE + 1 }, (_, i) => agePath(i)),
     VACCINES_PATH,
+    PRENATAL_TESTS_PATH,
   ];
   return paths.flatMap((path) =>
     LOCALES.map((locale) => ({

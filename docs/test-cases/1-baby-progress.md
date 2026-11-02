@@ -139,8 +139,9 @@ Shared step **Add baby** `{date}`:
   1. Navigate to /en/week/12/
 - **Expected:**
   - Heading "Pregnancy week 12"
-  - Row "Length" shows "5.4 cm"
-  - Row "Weight" shows "14 g"
+  - Subtitle "11 weeks pregnant: your baby is the size of a fig"
+  - Row "Crown–rump length" shows "4.1 cm"
+  - Row "Weight" shows "7 g"
   - Row "Heart rate" shows "140–170 beats/min"
   - Disclaimer "Figures are for reference only and do not replace medical advice." is visible
 
@@ -191,6 +192,69 @@ Shared step **Add baby** `{date}`:
   - Age 0 section lists links "Month 0" … "Month 11" (12 links)
   - Step 3 URL becomes /en/month/9/
   - Age 1 section lists links "Month 12" … "Month 24" (13 links)
+
+### Pregnancy week figures
+
+### TC-BP-23: Current week shows the row for completed weeks
+- **App:** Web (mobile)
+- **Precondition:** Empty `localStorage`
+- **Steps:**
+  1. Navigate to /vi/
+  2. Add baby with date = today − 147 days (`2026-06-03`)
+  3. Click "Xem chi tiết"
+- **Expected:**
+  - Headline "21 tuần 0 ngày"
+  - Growth card on the dashboard: "Bé to bằng" "củ cà rốt", row "Chiều dài đầu–gót" shows "27,4 cm", row "Cân nặng" shows "400 g"
+  - After step 3: URL becomes /vi/week/22/, heading "Tuần thai thứ 22", subtitle "Thai 21 tuần: bé to bằng củ cà rốt", same rows and values
+  - `<title>` starts with "Thai 21 tuần: bé to bằng củ cà rốt"
+
+### TC-BP-24: Week pages 1–4 have no figures
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/week/4/
+  2. Navigate to /en/week/1/
+- **Expected:**
+  - Week 4: subtitle "3 weeks pregnant: your baby's development"
+  - Week 4: no "My baby is the size of" badge
+  - Week 4: rows "Crown–rump length" and "Weight" show "Not measurable yet"
+  - Week 4: note "Early-week figures are rough estimates." is absent
+  - Week 1: subtitle "0 weeks pregnant: your baby's development"
+
+### TC-BP-25: Early weeks show estimates with a note
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/week/5/
+  2. Navigate to /en/week/8/
+  3. Navigate to /en/week/9/
+- **Expected:**
+  - Week 5: badge "a poppy seed", row "Crown–rump length" shows "1 mm", row "Weight" shows "under 1 g"
+  - Week 5: notes "Early-week figures are rough estimates." and "Up to week 20 measured crown to rump; from week 21 crown to heel." are visible
+  - Week 8: row "Crown–rump length" shows "1 cm", row "Weight" shows "under 1 g", the estimate note is visible
+  - Week 9: row "Crown–rump length" shows "1.6 cm", row "Weight" shows "1 g", the estimate note is absent
+
+### TC-BP-26: Length method changes between weeks 20 and 21
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/week/20/
+  2. Click "Next" in the step selector
+- **Expected:**
+  - Week 20: subtitle "19 weeks pregnant: your baby is the size of a mango", row "Crown–rump length" shows "15.3 cm", row "Weight" shows "240 g"
+  - After step 2: URL becomes /en/week/21/, subtitle "20 weeks pregnant: your baby is the size of a banana", row "Crown–heel length" shows "25.7 cm", row "Weight" shows "330 g"
+  - Both pages show the note "Up to week 20 measured crown to rump; from week 21 crown to heel."
+
+### TC-BP-27: Week 40 shows the 39-week row
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /vi/week/40/
+- **Expected:**
+  - Subtitle "Thai 39 tuần: bé to bằng quả bí ngô"
+  - Row "Chiều dài đầu–gót" shows "50,1 cm"
+  - Row "Cân nặng" shows "3,186 kg"
+  - Fruit image `src` ends with `/assets/size/pumpkin.svg`
 
 ### Guide navigation
 

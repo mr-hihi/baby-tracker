@@ -40,7 +40,7 @@ pregnancy (elapsed 0–279) → born (elapsed ≥ 280)
 - `dueDate = lastPeriodDate + 280 days`; `daysUntilDue = 280 − elapsed` (1 on the last pregnancy day).
 - Born: `birthDate = dueDate`, `daysSinceBirth = elapsed − 280` (0 on the first day).
 - The growth card opens on the current step: week `weeks + 1` while pregnant (21 weeks 0 days → week 22), age `age.years` capped at 18 after birth.
-- Current point, used by [3. Vaccination Record](3-vaccination.md): week `weeks + 1` while pregnant; after birth month `12·age.years + age.months` while that is ≤ 24, then age `age.years` capped at 18. Day 280 is month 0.
+- Current point, used by [3. Vaccination Record](3-vaccination.md) and [4. Prenatal Tests](4-prenatal-tests.md): week `weeks + 1` while pregnant; after birth month `12·age.years + age.months` while that is ≤ 24, then age `age.years` capped at 18. Day 280 is month 0.
 
 ## 1.4 Display
 
@@ -121,7 +121,7 @@ month 0 → month 1 → … → month 24                          (separate, gui
 
 ### Order between steps
 
-Care items and vaccine doses compare steps of different kinds with one order:
+Care items, vaccine doses and prenatal tests compare steps of different kinds with one order:
 
 - Every `week` step comes before every `month` and `age` step.
 - `month M` and `age Y` compare as `M` months against `12·Y` months: age 0 = month 0, age 1 = month 12, age 2 = month 24.
@@ -142,22 +142,77 @@ Figures are reference values, never personal measurements. Every page shows the 
 
 | Table | Rows | Values | Source |
 |---|---|---|---|
-| Pregnancy weeks | weeks 4–40 | fruit, length (cm), weight (g); heart rate weeks 6–12 by week, 120–160 from week 13 | pregnancy reference tables |
+| Pregnancy weeks | completed weeks 4–39 | fruit, length (cm), weight (g) | [Pregnancy week figures](#pregnancy-week-figures) |
+| Pregnancy heart rate | week pages 6–40 | by week for weeks 6–12, 120–160 from week 13 | fetal heart rate references |
 | Months | months 0–24 | length / height (cm), weight (kg), boy and girl | WHO Child Growth Standards medians |
 | Years | ages 0–18 | height (cm), weight (kg), boy and girl; resting heart rate bands | WHO/CDC medians |
 
-- Weeks 1–3 have no figures; the card shows "Not measurable yet".
-- Lengths up to week 19 are crown–rump, from week 20 crown–heel — the jump at week 20 is real.
 - Months 0–23 show length (lying down), month 24 shows height (standing) — WHO switches at 24 months.
 - Month 0, 12 and 24 rows equal the age 0, 1 and 2 rows.
 - A month uses the resting heart rate band of age `floor(M / 12)`.
 - No gender → height and weight are the boy–girl average.
 
+### Pregnancy week figures
+
+Rows are keyed by completed weeks of pregnancy — the `weeks` of [1.3](#13-stages).
+
+**Rules:**
+
+- The page "Pregnancy week N" covers `N − 1` weeks `+0` … `+6` days, so it shows the row for `N − 1` completed weeks: 21 weeks 0 days opens week 22, which shows the 21-week row. Fruit, length and weight follow this rule; heart rate is read by week page.
+- Week pages 1–4 have no row: no fruit, and length and weight show "Not measurable yet".
+- There is no 40-week row: day 280 is already age 0.
+- Length is crown–rump up to the 19-week row and crown–heel from the 20-week row. The length label reads crown–rump on week pages 1–20 and crown–heel from week page 21, and the length note names the switch; the step 15.3 → 25.7 cm between week pages 20 and 21 is the change of method, not growth.
+- Rows 4–7 are rough estimates — no published table covers them. Week pages 5–8 show the early-week estimate note.
+- Lengths under 1 cm show in mm; weights under 1 g show as "under 1 g".
+- Rows 8–19 come from the BabyCenter fetal development chart; rows 20–39 from Vinmec, "Bảng cân nặng và chiều dài thai nhi theo tiêu chuẩn của WHO". The source changes once, at the same row as the length method.
+
+| Completed weeks | Week page | Fruit | Length (cm) | Weight (g) |
+|---|---|---|---|---|
+| 4 | 5 | poppy seed | 0.1 | < 1 |
+| 5 | 6 | sesame seed | 0.2 | < 1 |
+| 6 | 7 | lentil | 0.5 | < 1 |
+| 7 | 8 | blueberry | 1.0 | < 1 |
+| 8 | 9 | raspberry | 1.6 | 1 |
+| 9 | 10 | cherry | 2.3 | 2 |
+| 10 | 11 | strawberry | 3.1 | 4 |
+| 11 | 12 | fig | 4.1 | 7 |
+| 12 | 13 | lime | 5.4 | 14 |
+| 13 | 14 | peach | 7.4 | 23 |
+| 14 | 15 | lemon | 8.7 | 43 |
+| 15 | 16 | apple | 10.1 | 70 |
+| 16 | 17 | avocado | 11.6 | 100 |
+| 17 | 18 | pear | 13.0 | 140 |
+| 18 | 19 | bell pepper | 14.2 | 190 |
+| 19 | 20 | mango | 15.3 | 240 |
+| 20 | 21 | banana | 25.7 | 330 |
+| 21 | 22 | carrot | 27.4 | 400 |
+| 22 | 23 | papaya | 29.0 | 476 |
+| 23 | 24 | grapefruit | 30.6 | 565 |
+| 24 | 25 | corn | 32.2 | 665 |
+| 25 | 26 | cauliflower | 33.7 | 756 |
+| 26 | 27 | lettuce | 35.1 | 900 |
+| 27 | 28 | cabbage | 36.6 | 1,000 |
+| 28 | 29 | pomelo | 37.6 | 1,100 |
+| 29 | 30 | butternut squash | 39.3 | 1,239 |
+| 30 | 31 | eggplant | 40.5 | 1,396 |
+| 31 | 32 | coconut | 41.8 | 1,568 |
+| 32 | 33 | jicama | 43.0 | 1,755 |
+| 33 | 34 | pineapple | 44.1 | 2,000 |
+| 34 | 35 | cantaloupe | 45.3 | 2,200 |
+| 35 | 36 | honeydew | 46.3 | 2,378 |
+| 36 | 37 | winter melon | 47.3 | 2,600 |
+| 37 | 38 | leek | 48.3 | 2,800 |
+| 38 | 39 | mini watermelon | 49.3 | 3,000 |
+| 39 | 40 | pumpkin | 50.1 | 3,186 |
+
 ## 1.7 Guide pages
 
 ### Week page `/{locale}/week/{N}/`
 
-Heading "Pregnancy week N", fruit title, growth card (illustration, fruit, length, weight, heart rate, week note), the Care section, the Vaccines section, "Track your baby" button, journey index.
+Heading "Pregnancy week N", fruit title, growth card (illustration, fruit, length, weight, heart rate, week note), the Care section, the Vaccines section, the Prenatal tests section ([4. Prenatal Tests](4-prenatal-tests.md)), "Track your baby" button, journey index.
+
+- The fruit title counts completed weeks, like the figures: `Thai {N − 1} tuần: bé to bằng {fruit}` / `{N − 1} weeks pregnant: your baby is the size of {fruit}`. Week pages 1–4 have no fruit: `Thai {N − 1} tuần: sự phát triển của bé` / `{N − 1} weeks pregnant: your baby's development`.
+- The page `<title>` is the fruit title followed by the app name.
 
 ### Month page `/{locale}/month/{M}/`
 
@@ -186,6 +241,10 @@ Three link grids on the home page and every guide page: "40 weeks of pregnancy" 
 
 | Key | vi | en |
 |---|---|---|
+| Week length label, crown–rump | Chiều dài đầu–mông | Crown–rump length |
+| Week length label, crown–heel | Chiều dài đầu–gót | Crown–heel length |
+| Week length note | Đến tuần 20 đo từ đỉnh đầu tới mông; từ tuần 21 đo từ đỉnh đầu tới gót chân. | Up to week 20 measured crown to rump; from week 21 crown to heel. |
+| Early-week estimate note | Số đo những tuần đầu chỉ là ước lượng. | Early-week figures are rough estimates. |
 | Month heading | Tháng thứ {month} | Month {month} |
 | Month index heading / breadcrumb | Từng tháng | Month by month |
 | Month link label | Tháng {n} | Month {n} |

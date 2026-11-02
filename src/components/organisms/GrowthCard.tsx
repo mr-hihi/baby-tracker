@@ -5,7 +5,7 @@ import { AgeMedallion, FruitMedallion, SizeBadge } from "@/components/molecules/
 import { StatRow } from "@/components/molecules/StatRow";
 import { StepSelector, type StepNavigation } from "@/components/molecules/StepSelector";
 import type { Gender } from "@/features/growth/childhood-years";
-import { babyImagePath, fruitImagePath, growthStats } from "@/features/growth/stats";
+import { babyImagePath, fruitImagePath, growthStats, type GrowthStats } from "@/features/growth/stats";
 import type { GrowthStep, StepKind } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
 import { fill, formatBeatRange, formatLength, formatWeight } from "@/features/locale/format";
@@ -31,6 +31,12 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
     week: growth.weekImageAlt,
     month: growth.monthImageAlt,
     age: growth.ageImageAlt,
+  };
+  const measureLabels: Record<GrowthStats["measure"], string> = {
+    "crown-rump": growth.crownRumpLength,
+    "crown-heel": growth.crownHeelLength,
+    length: growth.length,
+    height: growth.height,
   };
   const figureNotes: Record<StepKind, string> = {
     week: growth.lengthNote,
@@ -81,7 +87,7 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
       <dl className="mt-6 grid gap-4 px-2">
         <StatRow
           icon="ruler"
-          label={stats.measure === "length" ? growth.length : growth.height}
+          label={measureLabels[stats.measure]}
           value={stats.sizeCm === undefined ? missing : formatLength(stats.sizeCm, locale)}
         />
         <StatRow
@@ -106,6 +112,7 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
       {(stats.sizeCm !== undefined || !isWeek) && (
         <p className="mt-3 px-2 text-xs text-muted">{figureNotes[step.kind]}</p>
       )}
+      {stats.estimated && <p className="mt-1 px-2 text-xs text-muted">{growth.estimateNote}</p>}
 
       {children}
     </article>

@@ -4,7 +4,7 @@
 
 ## 3.1 Overview
 
-Parents see the national Expanded Programme on Immunization (TCMR) schedule — the mother's doses during pregnancy and the baby's doses up to 24 months — and record, per baby, which doses were given and when. Each dose gets a status from the baby's current point; due and overdue doses show on the guide pages, on a dashboard card and on a schedule page. Code lives in `src/features/vaccinations/`.
+Parents see the national Expanded Programme on Immunization (TCMR) schedule — the mother's doses during pregnancy and the baby's doses up to 24 months — and record, per baby, which doses were given and when. Each dose gets a status from the baby's current point; due and overdue doses show on the guide pages, on a dashboard card and on a schedule page. Code lives in `src/features/vaccinations/`; the status rules and the record date check are shared with [4. Prenatal Tests](4-prenatal-tests.md) in `src/features/schedule/`.
 
 - Persona: parents-to-be and parents (end users).
 - Depends on: [1. Baby Progress](1-baby-progress.md) (current point, order between steps, start date of a step), Babies (selected baby, storage), Locale (texts, date format).

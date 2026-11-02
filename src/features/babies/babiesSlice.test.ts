@@ -8,6 +8,8 @@ import {
   doseRecorded,
   doseRecordRemoved,
   selectSelectedBaby,
+  testRecorded,
+  testRecordRemoved,
   type Baby,
 } from "./babiesSlice";
 
@@ -61,6 +63,20 @@ describe("babiesSlice", () => {
     const state = reducer(reducer(undefined, babyAdded(bong)), babyUpdated({ ...bong, name: "Bông Bông" }));
     expect(state.items[0]).not.toHaveProperty("vaccinations");
   });
+
+  it("keeps the recorded prenatal tests when the baby is edited", () => {
+    const recorded = reducer(
+      reducer(undefined, babyAdded(bong)),
+      testRecorded({ babyId: "a", testId: "nipt", date: "2026-06-12" }),
+    );
+    const state = reducer(recorded, babyUpdated({ ...bong, name: "Bông Bông" }));
+    expect(state.items).toEqual([{ ...bong, name: "Bông Bông", prenatalTests: { nipt: "2026-06-12" } }]);
+  });
+
+  it("adds no prenatalTests field when the edited baby has none", () => {
+    const state = reducer(reducer(undefined, babyAdded(bong)), babyUpdated({ ...bong, name: "Bông Bông" }));
+    expect(state.items[0]).not.toHaveProperty("prenatalTests");
+  });
 });
 
 describe("doseRecorded", () => {
@@ -112,6 +128,50 @@ describe("doseRecordRemoved", () => {
 
   it("does nothing for an unknown baby", () => {
     const state = reducer(reducer(undefined, babyAdded(bong)), doseRecordRemoved({ babyId: "zzz", doseId: "bcg" }));
+    expect(state.items).toEqual([bong]);
+  });
+});
+
+describe("testRecorded", () => {
+  it("stores the date under the test id and replaces it on a second record", () => {
+    let state = reducer(undefined, babyAdded(bong));
+    state = reducer(state, testRecorded({ babyId: "a", testId: "nipt", date: "2026-06-12" }));
+    expect(state.items[0].prenatalTests).toEqual({ nipt: "2026-06-12" });
+    state = reducer(state, testRecorded({ babyId: "a", testId: "nipt", date: "2026-06-15" }));
+    expect(state.items[0].prenatalTests).toEqual({ nipt: "2026-06-15" });
+  });
+
+  it("records for the baby with the given id only", () => {
+    let state = reducer(reducer(undefined, babyAdded(bong)), babyAdded(na));
+    state = reducer(state, testRecorded({ babyId: "b", testId: "nipt", date: "2026-06-12" }));
+    expect(state.items[0]).not.toHaveProperty("prenatalTests");
+    expect(state.items[1].prenatalTests).toEqual({ nipt: "2026-06-12" });
+  });
+
+  it("ignores an unknown baby", () => {
+    const state = reducer(
+      reducer(undefined, babyAdded(bong)),
+      testRecorded({ babyId: "zzz", testId: "nipt", date: "2026-06-12" }),
+    );
+    expect(state.items).toEqual([bong]);
+  });
+});
+
+describe("testRecordRemoved", () => {
+  it("removes the test record", () => {
+    let state = reducer(undefined, babyAdded(bong));
+    state = reducer(state, testRecorded({ babyId: "a", testId: "nipt", date: "2026-06-12" }));
+    state = reducer(state, testRecordRemoved({ babyId: "a", testId: "nipt" }));
+    expect(state.items[0].prenatalTests).toEqual({});
+  });
+
+  it("does nothing for a baby with no record", () => {
+    const state = reducer(reducer(undefined, babyAdded(bong)), testRecordRemoved({ babyId: "a", testId: "nipt" }));
+    expect(state.items).toEqual([bong]);
+  });
+
+  it("does nothing for an unknown baby", () => {
+    const state = reducer(reducer(undefined, babyAdded(bong)), testRecordRemoved({ babyId: "zzz", testId: "nipt" }));
     expect(state.items).toEqual([bong]);
   });
 });

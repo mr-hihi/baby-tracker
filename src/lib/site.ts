@@ -43,3 +43,5 @@ export function stepPath(step: GrowthStep): string {
 }
 
 export const VACCINES_PATH = "vaccines/";
+
+export const PRENATAL_TESTS_PATH = "prenatal-tests/";

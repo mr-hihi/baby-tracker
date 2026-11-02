@@ -4,18 +4,46 @@ import { monthBodySize } from "./infant-months";
 import { ageStep, monthStep, weekStep } from "./steps";
 
 describe("growthStats — pregnancy weeks", () => {
-  it("has no measurements before week 4", () => {
-    expect(growthStats(weekStep(3))).toEqual({ measure: "length" });
+  it("has no measurements before week 5", () => {
+    expect(growthStats(weekStep(4))).toEqual({ measure: "crown-rump" });
   });
 
-  it("has a size and fruit but no heartbeat in week 4", () => {
-    expect(growthStats(weekStep(4))).toEqual({
-      measure: "length",
+  it("shows an estimated size and fruit but no heartbeat in week 5", () => {
+    expect(growthStats(weekStep(5))).toEqual({
+      measure: "crown-rump",
       sizeCm: 0.1,
       weightG: 0.1,
       heartRate: undefined,
       fruit: "poppy-seed",
+      estimated: true,
     });
+  });
+
+  it("stops estimating from week 9", () => {
+    expect(growthStats(weekStep(9))).toEqual({
+      measure: "crown-rump",
+      sizeCm: 1.6,
+      weightG: 1,
+      heartRate: [150, 175],
+      fruit: "raspberry",
+      estimated: false,
+    });
+  });
+
+  it("shows the row for the completed weeks", () => {
+    expect(growthStats(weekStep(22))).toEqual({
+      measure: "crown-heel",
+      sizeCm: 27.4,
+      weightG: 400,
+      heartRate: [120, 160],
+      fruit: "carrot",
+      estimated: false,
+    });
+  });
+
+  it("measures crown to rump up to week 20 and crown to heel from week 21", () => {
+    expect(growthStats(weekStep(20))).toMatchObject({ measure: "crown-rump", sizeCm: 15.3, weightG: 240 });
+    expect(growthStats(weekStep(21))).toMatchObject({ measure: "crown-heel", sizeCm: 25.7, weightG: 330 });
   });
 
   it("uses the early heartbeat range in week 10", () => {
@@ -23,17 +51,11 @@ describe("growthStats — pregnancy weeks", () => {
   });
 
   it("uses the standard fetal heartbeat from week 13", () => {
-    expect(growthStats(weekStep(28))).toEqual({
-      measure: "length",
-      sizeCm: 37.6,
-      weightG: 1005,
-      heartRate: [120, 160],
-      fruit: "pomelo",
-    });
+    expect(growthStats(weekStep(13)).heartRate).toEqual([120, 160]);
   });
 
-  it("ends with a watermelon in week 40", () => {
-    expect(growthStats(weekStep(40)).fruit).toBe("watermelon");
+  it("ends with the 39-week row and a pumpkin in week 40", () => {
+    expect(growthStats(weekStep(40))).toMatchObject({ sizeCm: 50.1, weightG: 3186, fruit: "pumpkin" });
   });
 });
 

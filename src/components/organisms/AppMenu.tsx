@@ -9,7 +9,7 @@ import { dialogOpened, type DialogKind } from "@/features/dialogs/dialogSlice";
 import { useLocale } from "@/features/locale/LocaleProvider";
 import { LOCALES, switchLocaleInPath } from "@/features/locale/locales";
 import { rememberLocale } from "@/features/locale/preference";
-import { localePath, VACCINES_PATH } from "@/lib/site";
+import { localePath, PRENATAL_TESTS_PATH, VACCINES_PATH } from "@/lib/site";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 const MENU_ID = "app-menu";
@@ -96,6 +96,12 @@ export function AppMenu() {
           icon="syringe"
           label={dict.menu.vaccines}
           href={localePath(locale, VACCINES_PATH)}
+          onClick={() => menuRef.current?.hidePopover()}
+        />
+        <MenuLink
+          icon="testTube"
+          label={dict.menu.prenatalTests}
+          href={localePath(locale, PRENATAL_TESTS_PATH)}
           onClick={() => menuRef.current?.hidePopover()}
         />
         <div className="mt-1 border-t border-line px-3 pt-3 pb-2">

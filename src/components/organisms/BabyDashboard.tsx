@@ -15,6 +15,7 @@ import { todayIso } from "@/lib/date";
 import { localePath, stepPath, withBasePath } from "@/lib/site";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { GrowthCard } from "./GrowthCard";
+import { PrenatalTestCard } from "./PrenatalTestCard";
 import { VaccineCard } from "./VaccineCard";
 
 function DashboardSkeleton({ label }: { label: string }) {
@@ -57,6 +58,7 @@ function BabyOverview({ baby }: { baby: Baby }) {
   const { locale, dict } = useLocale();
   const [today] = useState(todayIso);
   const progress = growthProgress(baby.lastPeriodDate, today);
+  const point = currentPointForProgress(progress);
   const currentStep = stepForProgress(progress);
   const [selected, setSelected] = useState<GrowthStep>(currentStep);
   const { headline, details } = describeProgress(progress, locale, dict);
@@ -102,7 +104,8 @@ function BabyOverview({ baby }: { baby: Baby }) {
           </Link>
         </div>
       </GrowthCard>
-      <VaccineCard baby={baby} point={currentPointForProgress(progress)} today={today} />
+      <VaccineCard baby={baby} point={point} today={today} />
+      {progress.stage === "pregnancy" && <PrenatalTestCard baby={baby} point={point} today={today} />}
     </section>
   );
 }

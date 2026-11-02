@@ -1,19 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { ageStep, monthStep, weekStep } from "@/features/growth/steps";
 import {
-  doseEstimatedDate,
   dosesAtStep,
   dosesNeedingAction,
-  doseStatus,
   nextUpcomingDose,
   overdueDosesBeforeStep,
   scheduleMilestones,
 } from "./dose-status";
 import { VACCINE_DOSES, type VaccineDose, type VaccineDoseId } from "./vaccine-doses";
-
-function doseOf(id: VaccineDoseId): VaccineDose {
-  return VACCINE_DOSES.find((dose) => dose.id === id)!;
-}
 
 function ids(doses: readonly VaccineDose[]): string[] {
   return doses.map((dose) => dose.id);
@@ -24,46 +18,6 @@ function recordOf(...doseIds: VaccineDoseId[]) {
 }
 
 const ALL_DONE = recordOf(...VACCINE_DOSES.map((dose) => dose.id));
-
-describe("doseStatus", () => {
-  it("is done once a date is recorded, wherever the point is", () => {
-    const record = recordOf("tetanus-1");
-    expect(doseStatus(doseOf("tetanus-1"), weekStep(5), record)).toBe("done");
-    expect(doseStatus(doseOf("tetanus-1"), monthStep(10), record)).toBe("done");
-  });
-
-  it("is upcoming before the window opens", () => {
-    expect(doseStatus(doseOf("tetanus-1"), weekStep(19), {})).toBe("upcoming");
-  });
-
-  it("is due on the first and last step of the window", () => {
-    expect(doseStatus(doseOf("tetanus-1"), weekStep(20), {})).toBe("due");
-    expect(doseStatus(doseOf("tetanus-1"), weekStep(32), {})).toBe("due");
-  });
-
-  it("is overdue once the window has closed", () => {
-    expect(doseStatus(doseOf("tetanus-1"), weekStep(33), {})).toBe("overdue");
-  });
-
-  it("treats a pregnancy week as before every baby dose", () => {
-    expect(doseStatus(doseOf("hepb-birth"), weekStep(40), {})).toBe("upcoming");
-  });
-
-  it("treats a baby point as after every pregnancy dose", () => {
-    expect(doseStatus(doseOf("tetanus-1"), monthStep(0), {})).toBe("overdue");
-  });
-
-  it("follows the month of the baby point", () => {
-    expect(doseStatus(doseOf("opv-1"), monthStep(1), {})).toBe("upcoming");
-    expect(doseStatus(doseOf("opv-1"), monthStep(2), {})).toBe("due");
-    expect(doseStatus(doseOf("opv-1"), monthStep(3), {})).toBe("overdue");
-  });
-
-  it("matches age 2 with month 24", () => {
-    expect(doseStatus(doseOf("je-3"), ageStep(2), {})).toBe("due");
-    expect(doseStatus(doseOf("je-3"), ageStep(3), {})).toBe("overdue");
-  });
-});
 
 describe("dosesAtStep", () => {
   it("lists the doses whose window holds the week", () => {
@@ -174,21 +128,6 @@ describe("nextUpcomingDose", () => {
 
   it("is undefined when everything left is overdue", () => {
     expect(nextUpcomingDose(ageStep(3), {})).toBeUndefined();
-  });
-});
-
-describe("doseEstimatedDate", () => {
-  it("starts a pregnancy dose on its first week", () => {
-    expect(doseEstimatedDate(doseOf("tetanus-1"), "2026-04-01")).toBe("2026-08-12");
-  });
-
-  it("starts a birth dose on the estimated birth date", () => {
-    expect(doseEstimatedDate(doseOf("bcg"), "2026-04-01")).toBe("2027-01-06");
-  });
-
-  it("starts a month dose that many months after birth", () => {
-    expect(doseEstimatedDate(doseOf("opv-1"), "2026-04-01")).toBe("2027-03-06");
-    expect(doseEstimatedDate(doseOf("je-3"), "2026-04-01")).toBe("2029-01-06");
   });
 });
 

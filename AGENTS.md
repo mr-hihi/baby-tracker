@@ -37,6 +37,7 @@ workflow, API surface and permissions. Code is the implementation, not the spec.
 | 1 | Baby Progress | `docs/business/1-baby-progress.md` | `docs/test-cases/1-baby-progress.md` |
 | 2 | Care Guide | `docs/business/2-care-guide.md` | `docs/test-cases/2-care-guide.md` |
 | 3 | Vaccination Record | `docs/business/3-vaccination.md` | `docs/test-cases/3-vaccination.md` |
+| 4 | Prenatal Tests | `docs/business/4-prenatal-tests.md` | `docs/test-cases/4-prenatal-tests.md` |
 
 Skip only for: typo / formatting fixes, dependency bumps, and pure read-only questions.
 <!-- END AUTO-MANAGED: business-docs -->

@@ -1,5 +1,5 @@
 import type { Baby, SavedBabies } from "@/features/babies/babiesSlice";
-import { isIsoDate } from "@/lib/date";
+import { isIsoDate, type IsoDate } from "@/lib/date";
 
 export const BABIES_STORAGE_KEY = "baby-tracker:v1";
 
@@ -17,19 +17,28 @@ function isBaby(value: unknown): value is Baby {
   );
 }
 
-function dropInvalidVaccinations(baby: Baby): Baby {
-  const { vaccinations, ...rest } = baby;
-  const stored: unknown = vaccinations;
-  if (typeof stored !== "object" || stored === null || Array.isArray(stored)) return rest;
+function validRecordDates(stored: unknown): Record<string, IsoDate> | undefined {
+  if (typeof stored !== "object" || stored === null || Array.isArray(stored)) return undefined;
   const valid = Object.entries(stored).filter(([, date]) => typeof date === "string" && isIsoDate(date));
-  return valid.length > 0 ? { ...rest, vaccinations: Object.fromEntries(valid) } : rest;
+  return valid.length > 0 ? Object.fromEntries(valid) : undefined;
+}
+
+function dropInvalidRecords(baby: Baby): Baby {
+  const { vaccinations, prenatalTests, ...rest } = baby;
+  const validVaccinations = validRecordDates(vaccinations);
+  const validPrenatalTests = validRecordDates(prenatalTests);
+  return {
+    ...rest,
+    ...(validVaccinations && { vaccinations: validVaccinations }),
+    ...(validPrenatalTests && { prenatalTests: validPrenatalTests }),
+  };
 }
 
 export function parseSavedBabies(raw: string | null): SavedBabies {
   if (!raw) return EMPTY;
   try {
     const data = JSON.parse(raw) as Partial<SavedBabies>;
-    const items = Array.isArray(data.items) ? data.items.filter(isBaby).map(dropInvalidVaccinations) : [];
+    const items = Array.isArray(data.items) ? data.items.filter(isBaby).map(dropInvalidRecords) : [];
     const selectedId = typeof data.selectedId === "string" ? data.selectedId : null;
     return { items, selectedId };
   } catch {

@@ -1,8 +1,11 @@
 import type { CareItemId } from "@/features/care/care-items";
 import type { Fruit } from "@/features/growth/pregnancy-weeks";
+import type { PrenatalTestId } from "@/features/prenatal-tests/prenatal-tests";
 import type { Vaccine, VaccineDoseId } from "@/features/vaccinations/vaccine-doses";
 
 export type CareItemText = { title: string; detail: string };
+
+export type PrenatalTestText = { name: string; note: string };
 
 export type PluralForms = { one: string; other: string };
 
@@ -13,8 +16,8 @@ export const vi = {
     homeTitle: "Bé lớn từng ngày — theo dõi thai kỳ và sự phát triển của bé",
     homeDescription:
       "Theo dõi bé từ ngày đầu kỳ kinh cuối, qua 40 tuần thai đến 18 tuổi: kích thước so với trái cây, chiều dài, cân nặng, nhịp tim và mốc phát triển. Dữ liệu chỉ lưu trên máy của bạn.",
-    weekTitle: "Thai {week} tuần: bé to bằng {fruit}",
-    weekTitlePlain: "Thai {week} tuần: sự phát triển của bé",
+    weekTitle: "Thai {weeks} tuần: bé to bằng {fruit}",
+    weekTitlePlain: "Thai {weeks} tuần: sự phát triển của bé",
     weekDescription: "Tuần thai thứ {week}: {note}",
     ageTitle: "Bé {age} tuổi: chiều cao, cân nặng và mốc phát triển",
     ageDescription: "Bé {age} tuổi: {milestone} Chiều cao trung bình {boyHeight} (trai), {girlHeight} (gái).",
@@ -24,6 +27,9 @@ export const vi = {
     vaccinesTitle: "Lịch tiêm chủng mở rộng cho mẹ bầu và bé",
     vaccinesDescription:
       "Lịch các mũi tiêm chủng mở rộng (TCMR) cho mẹ khi mang thai và cho bé đến 24 tháng; đánh dấu mũi đã tiêm cho từng bé.",
+    prenatalTestsTitle: "Lịch xét nghiệm sàng lọc trước sinh cho mẹ bầu",
+    prenatalTestsDescription:
+      "Các xét nghiệm sàng lọc nên làm khi mang thai, như NIPT từ tuần 10; đánh dấu xét nghiệm đã làm cho từng bé.",
     chooserTitle: "Bé lớn từng ngày · Baby Day by Day",
   },
   menu: {
@@ -33,6 +39,7 @@ export const vi = {
     chooseBaby: "Chọn em bé",
     editBaby: "Sửa thông tin bé",
     vaccines: "Lịch tiêm chủng",
+    prenatalTests: "Lịch xét nghiệm thai kỳ",
     language: "Ngôn ngữ",
   },
   form: {
@@ -84,6 +91,8 @@ export const vi = {
     sizeIntro: "Bé to bằng",
     milestoneIntro: "Mốc phát triển",
     length: "Chiều dài",
+    crownRumpLength: "Chiều dài đầu–mông",
+    crownHeelLength: "Chiều dài đầu–gót",
     height: "Chiều cao",
     weight: "Cân nặng",
     heartRate: "Nhịp tim",
@@ -94,7 +103,8 @@ export const vi = {
     monthImageAlt: "Minh hoạ bé {month} tháng tuổi",
     ageImageAlt: "Hình minh hoạ bé {age} tuổi",
     fruitImageAlt: "Hình {fruit}",
-    lengthNote: "Đến tuần 19 đo từ đỉnh đầu tới mông; từ tuần 20 đo từ đỉnh đầu tới gót chân.",
+    lengthNote: "Đến tuần 20 đo từ đỉnh đầu tới mông; từ tuần 21 đo từ đỉnh đầu tới gót chân.",
+    estimateNote: "Số đo những tuần đầu chỉ là ước lượng.",
     monthNote: "Chiều dài, cân nặng là trung vị tham khảo của WHO.",
     ageNote: "Chiều cao và cân nặng là trung vị tham khảo của WHO/CDC.",
     boyValue: "Trai",
@@ -164,7 +174,6 @@ export const vi = {
     leek: "cây tỏi tây",
     "mini-watermelon": "quả dưa hấu nhỏ",
     pumpkin: "quả bí ngô",
-    watermelon: "quả dưa hấu",
   } satisfies Record<Fruit, string>,
   weekNotes: [
     "Kỳ kinh bắt đầu — tuổi thai được tính từ ngày này, dù bé chưa được thụ thai.",
@@ -279,7 +288,7 @@ export const vi = {
     notYetGiven: "Mũi chưa tiêm",
     doseLabel: "Mũi {n}",
     booster: "Mũi nhắc",
-    given: "Đã tiêm",
+    recorded: "Đã tiêm",
     statusDone: "Đã tiêm ngày {date}",
     statusUpcoming: "Dự kiến {date}",
     statusDue: "Đến hạn",
@@ -319,6 +328,35 @@ export const vi = {
     "je-2": "1–2 tuần sau mũi 1",
     "je-3": "1 năm sau mũi 2",
   } satisfies Partial<Record<VaccineDoseId, string>>,
+  prenatalTest: {
+    heading: "Xét nghiệm",
+    headingForBaby: "Xét nghiệm · {name}",
+    atStep: "Xét nghiệm ở mốc này",
+    notYetDone: "Xét nghiệm chưa làm",
+    weeks: "Tuần {from}–{to}",
+    recorded: "Đã làm",
+    statusDone: "Đã làm ngày {date}",
+    statusUpcoming: "Dự kiến {date}",
+    statusDue: "Đến hạn",
+    statusOverdue: "Quá hạn — hỏi bác sĩ",
+    scheduledFor: "Lịch xét nghiệm {date}",
+    changeDate: "Đổi ngày",
+    dateLabel: "Ngày xét nghiệm",
+    nextTest: "Xét nghiệm tiếp theo: {test} — khoảng {date}",
+    allDone: "Đã ghi nhận đủ các xét nghiệm",
+    fullSchedule: "Xem lịch xét nghiệm",
+    scheduleHeading: "Lịch xét nghiệm thai kỳ",
+    source: "Hướng dẫn sàng lọc trước sinh — Bộ Y tế",
+    dateRequired: "Hãy chọn ngày.",
+    dateInFuture: "Ngày xét nghiệm không được ở tương lai.",
+    dateBeforeLastPeriod: "Ngày xét nghiệm không được trước ngày đầu kỳ kinh cuối.",
+  },
+  prenatalTestTexts: {
+    nipt: {
+      name: "NIPT (sàng lọc trước sinh không xâm lấn)",
+      note: "Lấy máu mẹ; sàng lọc hội chứng Down, Edwards, Patau",
+    },
+  } satisfies Record<PrenatalTestId, PrenatalTestText>,
 };
 
 export type Dictionary = typeof vi;

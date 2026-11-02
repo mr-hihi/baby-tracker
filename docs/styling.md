@@ -24,6 +24,7 @@
 - Mobile-first: one column `mx-auto max-w-md px-4`; desktop just centres it.
 - **Preferred:** touch targets ≥ 40 px (`size-10` / `h-10`, buttons `py-2.5`); the main controls — step pills, step arrows, menu button — use 44 px (`size-11`).
 - Large radii: cards `rounded-[2rem]`, inner blocks `rounded-3xl` / `rounded-2xl`, pills `rounded-full`.
+- Section cards below the growth card (care, vaccines, prenatal tests) are compact: `mt-4 p-4`, list rows `px-3 py-2` with `gap-1.5`. The titled groups inside one card are split by a faint dashed line (`divide-y divide-dashed divide-line`, each group `py-3 last:pb-0`).
 - The size badge overlaps the image bottom (`-mt-14`) and its medallion sticks out left (`-ml-6`) — keep the card `overflow` visible.
 
 ## Typography

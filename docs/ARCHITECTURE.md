@@ -23,6 +23,7 @@ static HTML (prerendered, no baby data)
 | `/{locale}/month/{0..24}/` | `src/app/[locale]/month/[month]/page.tsx` | Static guide per month after birth, boy / girl comparison; not on the timeline |
 | `/{locale}/age/{0..18}/` | `src/app/[locale]/age/[age]/page.tsx` | Static guide per year, boy / girl comparison |
 | `/{locale}/vaccines/` | `src/app/[locale]/vaccines/page.tsx` | Static vaccination schedule; the selected baby's status after hydrate |
+| `/{locale}/prenatal-tests/` | `src/app/[locale]/prenatal-tests/page.tsx` | Static prenatal test schedule; the selected baby's status after hydrate |
 | `/sitemap.xml`, `/robots.txt`, `/manifest.webmanifest`, `/icon.svg` | `src/app/*.ts`, `src/app/icon.svg` | Metadata routes, `dynamic = "force-static"` |
 
 - **Critical:** every dynamic segment has `generateStaticParams()` and `dynamicParams = false`.
@@ -36,24 +37,26 @@ static HTML (prerendered, no baby data)
 |---|---|
 | `steps.ts` | One timeline: weeks 1–40 then ages 0–18 (59 steps); next / previous cross from week 40 to age 0; `stepWindow` shows 5 steps of one kind |
 | `timeline.ts` | `growthProgress(lastPeriodDate, today)` → pregnancy (weeks + days, due date) or born (age span); `stepForProgress` |
-| `pregnancy-weeks.ts` | Week table: fruit (weeks 4–40), length, weight in grams, heart rate |
+| `pregnancy-weeks.ts` | Week table keyed by completed weeks 4–39: fruit, length, weight in grams; heart rate by week page; `completedWeeksOn(week)` |
 | `childhood-years.ts` | WHO/CDC medians per age and gender; resting heart rate bands |
 | `stats.ts` | `growthStats(step, gender)`; image paths |
 
 - **Critical:** week N covers elapsed days `7(N-1)` … `7N-1`; day 280 is age 0.
 - **Critical:** month steps 0–24 are guide pages only, not on the timeline; WHO medians per month, with months 0 / 12 / 24 equal to ages 0 / 1 / 2. Rules: [business/1-baby-progress.md](business/1-baby-progress.md).
-- **Critical:** lengths up to week 19 are crown–rump, from week 20 crown–heel — the jump at week 20 is real, not a bug.
+- **Critical:** week page N shows the row for N − 1 completed weeks. Lengths are crown–rump up to week page 20 and crown–heel from week page 21 — the jump there is the change of method, not a bug. Rules: [business/1-baby-progress.md](business/1-baby-progress.md) → Pregnancy week figures.
 - No gender → height / weight are the boy–girl average and images come from the neutral set.
 
-## Care and vaccinations
+## Care, vaccinations and prenatal tests
 
 | Module | Responsibility | Spec |
 |---|---|---|
 | `src/features/care/` | Static care items (supplement / eat / avoid) per week, month, age | [business/2-care-guide.md](business/2-care-guide.md) |
-| `src/features/vaccinations/` | TCMR dose schedule, dose status from the baby's current point | [business/3-vaccination.md](business/3-vaccination.md) |
+| `src/features/vaccinations/` | TCMR dose schedule, doses per step and per subject | [business/3-vaccination.md](business/3-vaccination.md) |
+| `src/features/prenatal-tests/` | Prenatal test schedule (NIPT), tests per week | [business/4-prenatal-tests.md](business/4-prenatal-tests.md) |
+| `src/features/schedule/` | Status of a scheduled item from the baby's current point, record date check; shared by vaccinations and prenatal tests | [business/3-vaccination.md](business/3-vaccination.md) § 3.4 |
 
-- Care items and the dose list "at this step" are prerendered; dose status, the overdue list and the "Given" control render only after babies load.
-- Vaccination records are stored on `Baby.vaccinations` (see `state-management.md`).
+- Care items and the dose and test lists "at this step" are prerendered; status, the overdue list and the "Given" / "Done" control render only after babies load.
+- Records are stored on `Baby.vaccinations` and `Baby.prenatalTests` (see `state-management.md`).
 
 ## Images
 

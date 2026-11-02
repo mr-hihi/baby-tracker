@@ -1,14 +1,15 @@
 import { bodySize, restingHeartRate, type BodySize, type Gender } from "./childhood-years";
 import { monthBodySize } from "./infant-months";
-import { weekFacts, type BeatRange, type Fruit } from "./pregnancy-weeks";
+import { weekFacts, type BeatRange, type Fruit, type LengthMethod } from "./pregnancy-weeks";
 import { ageAtMonth, MAX_MONTH, type GrowthStep } from "./steps";
 
 export type GrowthStats = {
-  measure: "length" | "height";
+  measure: LengthMethod | "length" | "height";
   sizeCm?: number;
   weightG?: number;
   heartRate?: BeatRange;
   fruit?: Fruit;
+  estimated?: boolean;
 };
 
 function bodyStats(measure: GrowthStats["measure"], size: BodySize, age: number): GrowthStats {
@@ -24,11 +25,12 @@ export function growthStats(step: GrowthStep, gender?: Gender): GrowthStats {
   if (step.kind === "week") {
     const facts = weekFacts(step.value);
     return {
-      measure: "length",
+      measure: facts.lengthMethod,
       sizeCm: facts.lengthCm,
       weightG: facts.weightG,
       heartRate: facts.heartRate,
       fruit: facts.fruit,
+      estimated: facts.estimated,
     };
   }
   if (step.kind === "month") {
