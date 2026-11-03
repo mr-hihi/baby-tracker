@@ -4,12 +4,12 @@ import { monthBodySize } from "./infant-months";
 import { ageStep, monthStep, weekStep } from "./steps";
 
 describe("growthStats — pregnancy weeks", () => {
-  it("has no measurements before week 5", () => {
-    expect(growthStats(weekStep(4))).toEqual({ measure: "crown-rump" });
+  it("has no measurements before week 4", () => {
+    expect(growthStats(weekStep(3))).toEqual({ measure: "crown-rump" });
   });
 
-  it("shows an estimated size and fruit but no heartbeat in week 5", () => {
-    expect(growthStats(weekStep(5))).toEqual({
+  it("shows an estimated size and fruit but no heartbeat in week 4", () => {
+    expect(growthStats(weekStep(4))).toEqual({
       measure: "crown-rump",
       sizeCm: 0.1,
       weightG: 0.1,
@@ -19,31 +19,33 @@ describe("growthStats — pregnancy weeks", () => {
     });
   });
 
-  it("stops estimating from week 9", () => {
-    expect(growthStats(weekStep(9))).toEqual({
+  it("stops estimating from week 8", () => {
+    expect(growthStats(weekStep(7))).toMatchObject({ sizeCm: 1.0, estimated: true });
+    expect(growthStats(weekStep(8))).toEqual({
       measure: "crown-rump",
       sizeCm: 1.6,
       weightG: 1,
-      heartRate: [150, 175],
+      heartRate: [140, 170],
       fruit: "raspberry",
       estimated: false,
     });
   });
 
-  it("shows the row for the completed weeks", () => {
+  it("shows the reference row of the same week", () => {
+    expect(growthStats(weekStep(21))).toMatchObject({ sizeCm: 27.4, weightG: 400, fruit: "carrot" });
     expect(growthStats(weekStep(22))).toEqual({
       measure: "crown-heel",
-      sizeCm: 27.4,
-      weightG: 400,
+      sizeCm: 29.0,
+      weightG: 476,
       heartRate: [120, 160],
-      fruit: "carrot",
+      fruit: "papaya",
       estimated: false,
     });
   });
 
-  it("measures crown to rump up to week 20 and crown to heel from week 21", () => {
-    expect(growthStats(weekStep(20))).toMatchObject({ measure: "crown-rump", sizeCm: 15.3, weightG: 240 });
-    expect(growthStats(weekStep(21))).toMatchObject({ measure: "crown-heel", sizeCm: 25.7, weightG: 330 });
+  it("measures crown to rump up to week 19 and crown to heel from week 20", () => {
+    expect(growthStats(weekStep(19))).toMatchObject({ measure: "crown-rump", sizeCm: 15.3, weightG: 240 });
+    expect(growthStats(weekStep(20))).toMatchObject({ measure: "crown-heel", sizeCm: 25.7, weightG: 330 });
   });
 
   it("uses the early heartbeat range in week 10", () => {
@@ -54,8 +56,9 @@ describe("growthStats — pregnancy weeks", () => {
     expect(growthStats(weekStep(13)).heartRate).toEqual([120, 160]);
   });
 
-  it("ends with the 39-week row and a pumpkin in week 40", () => {
-    expect(growthStats(weekStep(40))).toMatchObject({ sizeCm: 50.1, weightG: 3186, fruit: "pumpkin" });
+  it("ends with a pumpkin in week 39 and a watermelon in week 40", () => {
+    expect(growthStats(weekStep(39))).toMatchObject({ sizeCm: 50.1, weightG: 3186, fruit: "pumpkin" });
+    expect(growthStats(weekStep(40))).toMatchObject({ sizeCm: 51.0, weightG: 3338, fruit: "watermelon" });
   });
 });
 

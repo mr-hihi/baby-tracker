@@ -11,10 +11,10 @@ import { JourneyIndex } from "@/components/organisms/JourneyIndex";
 import { PrenatalTestSection } from "@/components/organisms/PrenatalTestSection";
 import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
-import { completedWeeksOn, weekFacts } from "@/features/growth/pregnancy-weeks";
+import { weekFacts } from "@/features/growth/pregnancy-weeks";
 import { PREGNANCY_WEEKS, weekStep, type GrowthStep } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
-import { fill } from "@/features/locale/format";
+import { count, fill } from "@/features/locale/format";
 import { isLocale, type Locale } from "@/features/locale/locales";
 import { breadcrumbLd, pageMetadata } from "@/features/seo/metadata";
 import { localePath, stepPath, weekPath } from "@/lib/site";
@@ -35,7 +35,7 @@ async function resolve(params: PageProps<"/[locale]/week/[week]">["params"]) {
 function weekTitle(locale: Locale, week: number): string {
   const dict = getDictionary(locale);
   const { fruit } = weekFacts(week);
-  const weeks = completedWeeksOn(week);
+  const weeks = count(dict.units.week, week, locale);
   return fruit
     ? fill(dict.meta.weekTitle, { weeks, fruit: dict.fruits[fruit] })
     : fill(dict.meta.weekTitlePlain, { weeks });

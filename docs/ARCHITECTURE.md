@@ -37,13 +37,13 @@ static HTML (prerendered, no baby data)
 |---|---|
 | `steps.ts` | One timeline: weeks 1–40 then ages 0–18 (59 steps); next / previous cross from week 40 to age 0; `stepWindow` shows 5 steps of one kind |
 | `timeline.ts` | `growthProgress(lastPeriodDate, today)` → pregnancy (weeks + days, due date) or born (age span); `stepForProgress` |
-| `pregnancy-weeks.ts` | Week table keyed by completed weeks 4–39: fruit, length, weight in grams; heart rate by week page; `completedWeeksOn(week)` |
+| `pregnancy-weeks.ts` | Week table keyed by week page 4–40: fruit, length, weight in grams, heart rate |
 | `childhood-years.ts` | WHO/CDC medians per age and gender; resting heart rate bands |
 | `stats.ts` | `growthStats(step, gender)`; image paths |
 
 - **Critical:** week N covers elapsed days `7(N-1)` … `7N-1`; day 280 is age 0.
 - **Critical:** month steps 0–24 are guide pages only, not on the timeline; WHO medians per month, with months 0 / 12 / 24 equal to ages 0 / 1 / 2. Rules: [business/1-baby-progress.md](business/1-baby-progress.md).
-- **Critical:** week page N shows the row for N − 1 completed weeks. Lengths are crown–rump up to week page 20 and crown–heel from week page 21 — the jump there is the change of method, not a bug. Rules: [business/1-baby-progress.md](business/1-baby-progress.md) → Pregnancy week figures.
+- **Critical:** week page N shows the source tables' week-N row. Lengths are crown–rump up to week page 19 and crown–heel from week page 20 — the jump there is the change of method, not a bug. Rules: [business/1-baby-progress.md](business/1-baby-progress.md) → Pregnancy week figures.
 - No gender → height / weight are the boy–girl average and images come from the neutral set.
 
 ## Care, vaccinations and prenatal tests

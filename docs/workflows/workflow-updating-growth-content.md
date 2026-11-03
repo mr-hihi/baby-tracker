@@ -9,7 +9,7 @@
 
 ## Edit figures
 
-- Pregnancy: `SIZES` and `ESTIMATED_SIZES` in `pregnancy-weeks.ts` (length cm, weight g, keyed by completed weeks), `EARLY_HEART` (by week page); the fruit order in `FRUITS` maps to completed weeks 4–39. Keep the table in [business/1-baby-progress.md](../business/1-baby-progress.md) → Pregnancy week figures in step.
+- Pregnancy: `SIZES` and `ESTIMATED_SIZES` in `pregnancy-weeks.ts` (length cm, weight g), `EARLY_HEART`, all keyed by week page; the fruit order in `FRUITS` maps to week pages 4–40. Keep the table in [business/1-baby-progress.md](../business/1-baby-progress.md) → Pregnancy week figures in step.
 - Childhood: `MEDIANS` and `RESTING_HEART` in `childhood-years.ts`.
 - Update the matching tests in `stats.test.ts`.
 

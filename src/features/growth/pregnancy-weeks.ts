@@ -37,6 +37,7 @@ export const FRUITS = [
   "leek",
   "mini-watermelon",
   "pumpkin",
+  "watermelon",
 ] as const;
 
 export type Fruit = (typeof FRUITS)[number];
@@ -56,8 +57,8 @@ type FetalSize = { lengthCm: number; weightG: number };
 
 const FETAL_HEART: BeatRange = [120, 160];
 const FETAL_HEART_FROM_WEEK = 13;
-const FIRST_SIZED_WEEKS = 4;
-const CROWN_HEEL_FROM_WEEKS = 20;
+const FIRST_SIZED_WEEK = 4;
+const CROWN_HEEL_FROM_WEEK = 20;
 
 const EARLY_HEART: Record<number, BeatRange> = {
   6: [100, 120],
@@ -109,22 +110,18 @@ const SIZES: Record<number, FetalSize> = {
   37: { lengthCm: 48.3, weightG: 2800 },
   38: { lengthCm: 49.3, weightG: 3000 },
   39: { lengthCm: 50.1, weightG: 3186 },
+  40: { lengthCm: 51.0, weightG: 3338 },
 };
 
-export function completedWeeksOn(week: number): number {
-  return week - 1;
-}
-
 export function weekFacts(week: number): WeekFacts {
-  const completedWeeks = completedWeeksOn(week);
-  const lengthMethod = completedWeeks < CROWN_HEEL_FROM_WEEKS ? "crown-rump" : "crown-heel";
+  const lengthMethod = week < CROWN_HEEL_FROM_WEEK ? "crown-rump" : "crown-heel";
   const heartRate = week >= FETAL_HEART_FROM_WEEK ? FETAL_HEART : EARLY_HEART[week];
-  const estimate = ESTIMATED_SIZES[completedWeeks];
-  const size = estimate ?? SIZES[completedWeeks];
+  const estimate = ESTIMATED_SIZES[week];
+  const size = estimate ?? SIZES[week];
   if (!size) return { lengthMethod, heartRate };
   return {
     lengthMethod,
-    fruit: FRUITS[completedWeeks - FIRST_SIZED_WEEKS],
+    fruit: FRUITS[week - FIRST_SIZED_WEEK],
     estimated: estimate !== undefined,
     heartRate,
     ...size,

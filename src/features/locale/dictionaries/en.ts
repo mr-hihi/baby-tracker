@@ -7,8 +7,8 @@ export const en: Dictionary = {
     homeTitle: "Baby Day by Day — pregnancy and child growth tracker",
     homeDescription:
       "Follow your baby from the first day of your last period, through 40 weeks of pregnancy, up to age 18: fruit-size comparisons, length, weight, heart rate and milestones. Your data stays on your device.",
-    weekTitle: "{weeks} weeks pregnant: your baby is the size of {fruit}",
-    weekTitlePlain: "{weeks} weeks pregnant: your baby's development",
+    weekTitle: "{weeks} pregnant: your baby is the size of {fruit}",
+    weekTitlePlain: "{weeks} pregnant: your baby's development",
     weekDescription: "Pregnancy week {week}: {note}",
     ageTitle: "{age}-year-old: average height, weight and milestones",
     ageDescription: "Age {age}: {milestone} Average height {boyHeight} (boys), {girlHeight} (girls).",
@@ -94,7 +94,7 @@ export const en: Dictionary = {
     monthImageAlt: "Illustration of a {month}-month-old baby",
     ageImageAlt: "Illustration of a {age}-year-old child",
     fruitImageAlt: "Picture of {fruit}",
-    lengthNote: "Up to week 20 measured crown to rump; from week 21 crown to heel.",
+    lengthNote: "Up to week 19 measured crown to rump; from week 20 crown to heel.",
     estimateNote: "Early-week figures are rough estimates.",
     monthNote: "Length and weight are WHO reference medians.",
     ageNote: "Height and weight are WHO/CDC reference medians.",
@@ -165,6 +165,7 @@ export const en: Dictionary = {
     leek: "a leek",
     "mini-watermelon": "a mini watermelon",
     pumpkin: "a pumpkin",
+    watermelon: "a watermelon",
   },
   weekNotes: [
     "Your period starts — pregnancy is dated from this day, before the baby is even conceived.",

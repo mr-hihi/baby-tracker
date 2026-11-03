@@ -16,8 +16,8 @@ export const vi = {
     homeTitle: "Bé lớn từng ngày — theo dõi thai kỳ và sự phát triển của bé",
     homeDescription:
       "Theo dõi bé từ ngày đầu kỳ kinh cuối, qua 40 tuần thai đến 18 tuổi: kích thước so với trái cây, chiều dài, cân nặng, nhịp tim và mốc phát triển. Dữ liệu chỉ lưu trên máy của bạn.",
-    weekTitle: "Thai {weeks} tuần: bé to bằng {fruit}",
-    weekTitlePlain: "Thai {weeks} tuần: sự phát triển của bé",
+    weekTitle: "Thai {weeks}: bé to bằng {fruit}",
+    weekTitlePlain: "Thai {weeks}: sự phát triển của bé",
     weekDescription: "Tuần thai thứ {week}: {note}",
     ageTitle: "Bé {age} tuổi: chiều cao, cân nặng và mốc phát triển",
     ageDescription: "Bé {age} tuổi: {milestone} Chiều cao trung bình {boyHeight} (trai), {girlHeight} (gái).",
@@ -103,7 +103,7 @@ export const vi = {
     monthImageAlt: "Minh hoạ bé {month} tháng tuổi",
     ageImageAlt: "Hình minh hoạ bé {age} tuổi",
     fruitImageAlt: "Hình {fruit}",
-    lengthNote: "Đến tuần 20 đo từ đỉnh đầu tới mông; từ tuần 21 đo từ đỉnh đầu tới gót chân.",
+    lengthNote: "Đến tuần 19 đo từ đỉnh đầu tới mông; từ tuần 20 đo từ đỉnh đầu tới gót chân.",
     estimateNote: "Số đo những tuần đầu chỉ là ước lượng.",
     monthNote: "Chiều dài, cân nặng là trung vị tham khảo của WHO.",
     ageNote: "Chiều cao và cân nặng là trung vị tham khảo của WHO/CDC.",
@@ -174,6 +174,7 @@ export const vi = {
     leek: "cây tỏi tây",
     "mini-watermelon": "quả dưa hấu nhỏ",
     pumpkin: "quả bí ngô",
+    watermelon: "quả dưa hấu",
   } satisfies Record<Fruit, string>,
   weekNotes: [
     "Kỳ kinh bắt đầu — tuổi thai được tính từ ngày này, dù bé chưa được thụ thai.",
