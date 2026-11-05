@@ -1,11 +1,15 @@
 import type { CareItemId } from "@/features/care/care-items";
 import type { Fruit } from "@/features/growth/pregnancy-weeks";
 import type { PrenatalTestId } from "@/features/prenatal-tests/prenatal-tests";
+import type { RoutineSource, RoutineStageId } from "@/features/routine/routine-stages";
+import type { SkillArea, SkillItemId } from "@/features/skills/skill-items";
 import type { Vaccine, VaccineDoseId } from "@/features/vaccinations/vaccine-doses";
 
 export type CareItemText = { title: string; detail: string };
 
 export type PrenatalTestText = { name: string; note: string };
+
+export type SkillItemText = { title: string; detail: string };
 
 export type PluralForms = { one: string; other: string };
 
@@ -109,6 +113,11 @@ export const vi = {
     ageNote: "Chiều cao và cân nặng là trung vị tham khảo của WHO/CDC.",
     boyValue: "Trai",
     girlValue: "Gái",
+    valueWithDelta: "{value} ({delta})",
+    monthDeltaNote: "Số trong ngoặc là mức tăng so với tháng trước.",
+    ageDeltaNote: "Số trong ngoặc là mức tăng so với năm trước.",
+    methodChangeNote: "Từ mốc này bé được đo đứng thay vì đo nằm, nên không tính mức tăng chiều cao.",
+    sourceChangeNote: "{measure} ở mốc này lấy từ bảng chuẩn khác mốc trước, nên không tính mức tăng.",
   },
   guide: {
     weekHeading: "Tuần thai thứ {week}",
@@ -282,6 +291,98 @@ export const vi = {
     "varied-child-diet": { title: "Ăn đa dạng", detail: "Bữa ăn đa dạng, có rau và trái cây mỗi ngày" },
     "no-sugary-drinks": { title: "Đồ ngọt", detail: "Hạn chế nước ngọt và đồ ăn vặt nhiều đường" },
   } satisfies Record<CareItemId, CareItemText>,
+  routine: {
+    heading: "Ăn & ngủ",
+    feedingHeading: "Ăn",
+    sleepHeading: "Ngủ",
+    labels: {
+      interval: "Cách nhau",
+      perBottle: "Mỗi cữ (bú bình)",
+      feedsPerDay: "Số cữ mỗi ngày",
+      mainMeals: "Bữa chính",
+      snacks: "Bữa phụ",
+      dairy: "Sữa và chế phẩm sữa (quy ra sữa)",
+      totalSleep: "Tổng giờ ngủ",
+      naps: "Giấc ngày",
+    },
+    units: {
+      hours: { one: "{n} giờ", other: "{n} giờ" },
+      hoursPerDay: { one: "{n} giờ/ngày", other: "{n} giờ/ngày" },
+      ml: { one: "{n} ml", other: "{n} ml" },
+      mlPerDay: { one: "{n} ml/ngày", other: "{n} ml/ngày" },
+      feeds: { one: "{n} cữ", other: "{n} cữ" },
+      meals: { one: "{n} bữa", other: "{n} bữa" },
+      snacks: { one: "{n} bữa", other: "{n} bữa" },
+      naps: { one: "{n} giấc", other: "{n} giấc" },
+    } satisfies Record<string, PluralForms>,
+    breastfeedingNote: "Lịch tham khảo; bé bú mẹ vẫn cho bú khi bé đòi. Lượng ml chỉ dành cho bú bình.",
+    formulaLimitNote:
+      "Lượng mỗi cữ và số cữ không nhân thẳng với nhau: nhiều cữ thì mỗi cữ ít hơn. Tổng sữa công thức thường không quá 960 ml/ngày.",
+    sourceLine: "Nguồn: {source}",
+    napsSourceLine: "Số giấc: {source}",
+    sources: {
+      "easy-aap": "Nhịp E.A.S.Y. (Tracy Hogg); lượng sữa theo AAP",
+      aap: "AAP",
+      "aap-dga": "Số bữa theo AAP; sữa theo Dietary Guidelines for Americans",
+      "who-2019": "WHO 2019",
+      "aasm-2016": "AASM 2016 (AAP chấp thuận)",
+      easy: "E.A.S.Y. (Tracy Hogg)",
+    } satisfies Record<RoutineSource, string>,
+  },
+  routineStages: {
+    "milk-newborn": "Cho ăn khi bé vừa thức, chơi ngắn rồi cho ngủ; lặp lại khoảng 3 giờ một lần, cả ban đêm.",
+    "milk-3-hour": "Giữ vòng ăn – chơi – ngủ 3 giờ vào ban ngày; quãng ngủ đêm dài dần khi bé tăng cân tốt.",
+    "milk-4-hour": "Chuyển sang vòng 4 giờ: ít cữ hơn, mỗi cữ nhiều hơn, chơi lâu hơn; cữ tối muộn giúp bé ngủ đêm dài.",
+    "milk-with-solids": "Giữ vòng 4 giờ, cho ăn dặm sau cữ sữa; sữa vẫn là thức ăn chính.",
+    "milk-three-meals": "Các bữa ăn dặm vào nếp; sữa cho lúc mới thức, giữa các bữa và trước khi ngủ.",
+    "meals-family": "Cho bú mẹ đến 24 tháng; nếu không bú mẹ thì uống sữa tươi nguyên kem bằng cốc, cùng bữa chính hoặc bữa phụ.",
+    "meals-toddler": "Bữa chính và bữa phụ đúng giờ, ngồi vào bàn; giữa các bữa cho uống nước.",
+    "meals-preschool": "Giữ giờ ăn cố định; để bé tự lấy và tự xúc ăn.",
+    "meals-school": "Ăn sáng mỗi ngày; bữa phụ sau giờ học giúp bé đủ sức tới bữa tối.",
+    "meals-older": "Giai đoạn lớn vọt bé ăn nhiều hơn; giữ bữa sáng và bữa cơm gia đình đều đặn.",
+    "sleep-newborn": "Đặt bé xuống khi bé buồn ngủ nhưng còn thức, nằm ngửa, ở chỗ ngủ riêng.",
+    "sleep-young-infant": "Bắt đầu dỗ ngủ từ cái ngáp hay ánh nhìn đờ đầu tiên, trước khi bé quá mệt.",
+    "sleep-three-naps": "Ba giấc ngày dài và một giấc ngắn cuối chiều.",
+    "sleep-two-three-naps": "Giấc cuối chiều dần bỏ; giữ nếp trước khi ngủ giống nhau mỗi tối.",
+    "sleep-two-naps": "Một giấc sáng, một giấc chiều; tối đi ngủ cùng một giờ.",
+    "sleep-one-two-naps": "Giấc sáng dần bỏ; chuyển sang một giấc trưa khi bé không chịu ngủ sáng.",
+    "sleep-one-nap": "Một giấc trưa; thư giãn nhẹ nhàng trước khi ngủ tối.",
+    "sleep-age-2": "Một giấc chiều và một câu chuyện trước giờ ngủ.",
+    "sleep-preschool": "Bé có thể thôi ngủ trưa; vẫn giữ giờ nghỉ yên tĩnh, giờ ngủ và giờ dậy đều đặn.",
+    "sleep-age-5": "Giờ ngủ và giờ dậy đều đặn, cả cuối tuần.",
+    "sleep-school": "Tắt màn hình một giờ trước khi ngủ; phòng ngủ tối và mát.",
+    "sleep-teen": "Tuổi teen hay ngủ muộn dần; giữ giờ đi ngủ đều đặn, hạn chế màn hình buổi tối.",
+  } satisfies Record<RoutineStageId, string>,
+  skills: {
+    heading: "Dạy con",
+    areas: {
+      language: "Ngôn ngữ",
+      movement: "Vận động",
+      thinking: "Tư duy",
+      character: "Ý chí",
+      independence: "Tự lập",
+      social: "Giao tiếp",
+    } satisfies Record<SkillArea, string>,
+    source: "Theo sách “Em phải đến Harvard học kinh tế” (Lưu Vệ Hoa, Trương Hân Vũ)",
+  },
+  skillItems: {
+    "talk-all-day": { title: "Trò chuyện cả ngày", detail: "Trò chuyện với bé suốt ngày, gọi tên việc đang làm và đồ vật bé nhìn thấy. Trong sách, bố mẹ bắt đầu dạy bé từ khi 15 ngày tuổi và mời người thân đến để lúc nào cũng có người nói chuyện với bé." },
+    "move-every-day": { title: "Vận động mỗi ngày", detail: "Cho bé nằm sấp chơi khi thức, có người lớn trông; lúc tắm cho bé đạp nước, người lớn luôn giữ bé." },
+    "see-the-world": { title: "Cho bé xem thế giới", detail: "Đưa bé ra ngoài, gọi tên cây, con vật, đồ vật bé đang nhìn." },
+    "plain-speech": { title: "Nói rõ, nói đủ câu", detail: "Nói câu rõ ràng, đủ ý thay vì nói giọng em bé; gọi đồ vật bằng tên thật." },
+    "plain-speech-child": { title: "Nói đủ câu", detail: "Tiếp tục nói đủ câu, và hỏi lại để con tự kể bằng lời của mình." },
+    "read-together": { title: "Đọc sách cùng con", detail: "Đọc sách cùng con mỗi ngày, cùng nói về tranh và câu chuyện." },
+    chores: { title: "Việc nhà, tự phục vụ", detail: "Giao việc nhỏ con tự làm xong được: tự mặc quần áo, cất đồ chơi, dọn bàn ăn." },
+    "reasoned-talk": { title: "Phản biện có lý lẽ", detail: "Cho con được cãi lại, miễn là con nêu lý do; bố mẹ cũng trả lời bằng lý lẽ." },
+    "swim-and-rope": { title: "Bơi và nhảy dây", detail: "Bơi và nhảy dây đều đặn để khỏe và bền sức." },
+    perform: { title: "Tự tin trước đám đông", detail: "Cho con nói, hát hay diễn trước người khác; trong sách, cô bé đóng phim truyền hình lúc 5 tuổi." },
+    trips: { title: "Đi để học", detail: "Về quê, thăm di tích, rồi để con kể lại điều đã thấy." },
+    focus: { title: "Giờ học tập trung", detail: "Đặt một khoảng giờ cố định để làm bài, không bị xao nhãng, hết giờ thì nghỉ." },
+    "small-challenges": { title: "Thử thách nhỏ", detail: "Rèn ý chí bằng thử thách nhỏ, an toàn, do con chọn và được dừng bất cứ lúc nào." },
+    "plan-time": { title: "Tự lên kế hoạch", detail: "Để con tự lên kế hoạch học và chơi trong tuần, rồi cùng xem lại." },
+    "adult-topics": { title: "Trò chuyện như người lớn", detail: "Bàn chuyện thật như với người lớn và mong con có ý kiến có lý lẽ." },
+    "set-goals": { title: "Đặt mục tiêu", detail: "Giúp con chọn mục tiêu dài hạn và chia thành từng bước nhỏ." },
+  } satisfies Record<SkillItemId, SkillItemText>,
   vaccination: {
     heading: "Tiêm chủng",
     headingForBaby: "Tiêm chủng · {name}",

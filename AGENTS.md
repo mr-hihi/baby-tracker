@@ -38,6 +38,8 @@ workflow, API surface and permissions. Code is the implementation, not the spec.
 | 2 | Care Guide | `docs/business/2-care-guide.md` | `docs/test-cases/2-care-guide.md` |
 | 3 | Vaccination Record | `docs/business/3-vaccination.md` | `docs/test-cases/3-vaccination.md` |
 | 4 | Prenatal Tests | `docs/business/4-prenatal-tests.md` | `docs/test-cases/4-prenatal-tests.md` |
+| 5 | Feeding and Sleep | `docs/business/5-feeding-sleep.md` | `docs/test-cases/5-feeding-sleep.md` |
+| 6 | Skills to Teach | `docs/business/6-skills.md` | `docs/test-cases/6-skills.md` |
 
 Skip only for: typo / formatting fixes, dependency bumps, and pure read-only questions.
 <!-- END AUTO-MANAGED: business-docs -->

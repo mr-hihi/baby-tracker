@@ -5,10 +5,10 @@ import { AgeMedallion, FruitMedallion, SizeBadge } from "@/components/molecules/
 import { StatRow } from "@/components/molecules/StatRow";
 import { StepSelector, type StepNavigation } from "@/components/molecules/StepSelector";
 import type { Gender } from "@/features/growth/childhood-years";
-import { babyImagePath, fruitImagePath, growthStats, type GrowthStats } from "@/features/growth/stats";
+import { babyImagePath, fruitImagePath, growthStats, type DeltaBreak, type GrowthStats } from "@/features/growth/stats";
 import type { GrowthStep, StepKind } from "@/features/growth/steps";
 import { getDictionary } from "@/features/locale/dictionaries";
-import { fill, formatBeatRange, formatLength, formatWeight } from "@/features/locale/format";
+import { fill, formatBeatRange, formatSizeStat, formatWeightStat } from "@/features/locale/format";
 import type { Locale } from "@/features/locale/locales";
 import { withBasePath } from "@/lib/site";
 
@@ -43,6 +43,10 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
     month: growth.monthNote,
     age: growth.ageNote,
   };
+  const figureNote = stats.measure === "length" ? growth.monthNote : figureNotes[step.kind];
+  const deltaNotes: Partial<Record<StepKind, string>> = { month: growth.monthDeltaNote, age: growth.ageDeltaNote };
+  const breakNotes: Record<DeltaBreak, string> = { method: growth.methodChangeNote, source: growth.sourceChangeNote };
+  const hasDelta = stats.sizeDeltaCm !== undefined || stats.weightDeltaG !== undefined;
   const imageAlt = fill(imageAlts[step.kind], { [step.kind]: step.value });
   const missing = growth.notYet;
 
@@ -85,16 +89,8 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
       )}
 
       <dl className="mt-6 grid gap-4 px-2">
-        <StatRow
-          icon="ruler"
-          label={measureLabels[stats.measure]}
-          value={stats.sizeCm === undefined ? missing : formatLength(stats.sizeCm, locale)}
-        />
-        <StatRow
-          icon="weight"
-          label={growth.weight}
-          value={stats.weightG === undefined ? missing : formatWeight(stats.weightG, locale, dict)}
-        />
+        <StatRow icon="ruler" label={measureLabels[stats.measure]} value={formatSizeStat(stats, locale, dict)} />
+        <StatRow icon="weight" label={growth.weight} value={formatWeightStat(stats, locale, dict)} />
         <StatRow
           icon="heart"
           label={growth.heartRate}
@@ -110,9 +106,20 @@ export function GrowthCard({ step, locale, navigation, currentStep, gender, prel
       )}
 
       {(stats.sizeCm !== undefined || !isWeek) && (
-        <p className="mt-3 px-2 text-xs text-muted">{figureNotes[step.kind]}</p>
+        <p className="mt-3 px-2 text-xs text-muted">{figureNote}</p>
       )}
       {stats.estimated && <p className="mt-1 px-2 text-xs text-muted">{growth.estimateNote}</p>}
+      {hasDelta && <p className="mt-1 px-2 text-xs text-muted">{deltaNotes[step.kind]}</p>}
+      {stats.sizeDeltaBreak && (
+        <p className="mt-1 px-2 text-xs text-muted">
+          {fill(breakNotes[stats.sizeDeltaBreak], { measure: measureLabels[stats.measure] })}
+        </p>
+      )}
+      {stats.weightDeltaBreak && (
+        <p className="mt-1 px-2 text-xs text-muted">
+          {fill(breakNotes[stats.weightDeltaBreak], { measure: growth.weight })}
+        </p>
+      )}
 
       {children}
     </article>

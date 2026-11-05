@@ -15,13 +15,13 @@
 
 - **Critical:** no user-visible literal in components; add the key to `vi.ts` first, then `en.ts` (the type forces it).
 - Placeholders are `{name}` filled with `fill()`; counts go through `count()` with `PluralForms`.
-- Numbers, lengths, weights, dates: always `formatNumber` / `formatLength` / `formatWeight` / `formatIsoDate` from `features/locale/format.ts`.
+- Numbers, lengths, weights, dates: always `formatNumber` / `formatLength` / `formatWeight` / `formatIsoDate` from `features/locale/format.ts`; a range through `formatRange` / `countRange`; a growth figure with its change through `formatSizeStat` / `formatWeightStat`.
   - ✅ `formatWeight(1005, "vi", dict)` → `1,005 kg` ❌ `${w / 1000} kg`
 
 ## Dates and units
 
 - **Critical:** dates are `IsoDate` strings (`YYYY-MM-DD`) and all math goes through `src/lib/date.ts` (UTC day arithmetic). Never compute with `Date` objects in local time.
-- Weight is stored in grams, length in centimetres; rounding happens only when formatting.
+- Weight is stored in grams, length in centimetres. Display precision is defined once in `features/locale/format.ts` (`roundLength`, `roundWeight`); `growthStats` rounds reference figures with it so a change equals the difference of the two shown values. Elsewhere rounding happens only when formatting.
 - Today's date is read once per component with `useState(todayIso)`.
 
 ## Comments

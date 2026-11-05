@@ -10,6 +10,8 @@ import { CareSection } from "@/components/organisms/CareSection";
 import { GrowthCard } from "@/components/organisms/GrowthCard";
 import { JourneyIndex } from "@/components/organisms/JourneyIndex";
 import { MonthLinks } from "@/components/organisms/MonthLinks";
+import { RoutineSection } from "@/components/organisms/RoutineSection";
+import { SkillSection } from "@/components/organisms/SkillSection";
 import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
 import { bodySize } from "@/features/growth/childhood-years";
@@ -83,7 +85,9 @@ export default async function AgePage({ params }: PageProps<"/[locale]/age/[age]
         </div>
       ) : (
         <>
+          <RoutineSection step={step} locale={locale} dict={dict} />
           <CareSection step={step} dict={dict} />
+          <SkillSection step={step} dict={dict} />
           <VaccineSection step={step} />
         </>
       )}

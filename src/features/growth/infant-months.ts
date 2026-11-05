@@ -1,4 +1,5 @@
-import { sizeForGender, type BodySize, type Gender } from "./childhood-years";
+import { sizeForGender, type BodyReference, type BodySize, type Gender } from "./childhood-years";
+import { MAX_MONTH } from "./steps";
 
 type MonthRow = [month: number, boyLength: number, boyWeight: number, girlLength: number, girlWeight: number];
 
@@ -37,4 +38,8 @@ export function monthBodySize(month: number, gender?: Gender): BodySize {
     { heightCm: girlLength, weightKg: girlWeight },
     gender,
   );
+}
+
+export function monthReference(month: number): BodyReference {
+  return { sizeMethod: month < MAX_MONTH ? "length" : "height", sizeSource: "who-2006", weightSource: "who-2006" };
 }

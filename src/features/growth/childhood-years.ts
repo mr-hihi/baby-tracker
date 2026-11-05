@@ -4,6 +4,18 @@ export type Gender = "boy" | "girl";
 
 export type BodySize = { heightCm: number; weightKg: number };
 
+export type SizeMethod = "length" | "height";
+
+export type GrowthSource = "who-2006" | "who-2007" | "cdc-2000";
+
+export type BodyReference = { sizeMethod: SizeMethod; sizeSource: GrowthSource; weightSource: GrowthSource };
+
+export const SOURCE_FAMILIES: Record<GrowthSource, "who" | "cdc"> = {
+  "who-2006": "who",
+  "who-2007": "who",
+  "cdc-2000": "cdc",
+};
+
 type YearRow = [age: number, boyHeight: number, boyWeight: number, girlHeight: number, girlWeight: number];
 
 const MEDIANS: YearRow[] = [
@@ -18,14 +30,21 @@ const MEDIANS: YearRow[] = [
   [8, 127.3, 25.4, 126.6, 25.0],
   [9, 132.6, 28.1, 132.5, 28.2],
   [10, 137.8, 31.2, 138.6, 31.9],
-  [11, 143.1, 35.0, 144.0, 36.0],
-  [12, 149.1, 39.9, 151.2, 41.0],
-  [13, 156.0, 45.3, 156.4, 45.8],
-  [14, 163.2, 50.8, 159.8, 49.8],
-  [15, 169.0, 56.0, 161.7, 52.7],
-  [16, 172.9, 60.8, 162.5, 54.6],
-  [17, 175.2, 64.4, 162.9, 55.9],
-  [18, 176.1, 66.9, 163.1, 56.6],
+  [11, 143.1, 36.1, 145.0, 37.4],
+  [12, 149.1, 40.7, 151.2, 41.8],
+  [13, 156.0, 45.8, 156.4, 46.0],
+  [14, 163.2, 51.2, 159.8, 49.5],
+  [15, 169.0, 56.5, 161.7, 52.1],
+  [16, 172.9, 61.1, 162.5, 53.9],
+  [17, 175.2, 64.7, 162.9, 55.2],
+  [18, 176.1, 67.3, 163.1, 56.2],
+];
+
+const YEAR_REFERENCES: [maxAge: number, reference: BodyReference][] = [
+  [1, { sizeMethod: "length", sizeSource: "who-2006", weightSource: "who-2006" }],
+  [5, { sizeMethod: "height", sizeSource: "who-2006", weightSource: "who-2006" }],
+  [10, { sizeMethod: "height", sizeSource: "who-2007", weightSource: "who-2007" }],
+  [Infinity, { sizeMethod: "height", sizeSource: "who-2007", weightSource: "cdc-2000" }],
 ];
 
 const RESTING_HEART: [maxAge: number, range: BeatRange][] = [
@@ -53,4 +72,8 @@ export function bodySize(age: number, gender?: Gender): BodySize {
 
 export function restingHeartRate(age: number): BeatRange {
   return RESTING_HEART.find(([maxAge]) => age <= maxAge)![1];
+}
+
+export function yearReference(age: number): BodyReference {
+  return YEAR_REFERENCES.find(([maxAge]) => age <= maxAge)![1];
 }

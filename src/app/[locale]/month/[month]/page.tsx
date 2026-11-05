@@ -9,6 +9,8 @@ import { Breadcrumbs } from "@/components/molecules/Breadcrumbs";
 import { CareSection } from "@/components/organisms/CareSection";
 import { GrowthCard } from "@/components/organisms/GrowthCard";
 import { JourneyIndex } from "@/components/organisms/JourneyIndex";
+import { RoutineSection } from "@/components/organisms/RoutineSection";
+import { SkillSection } from "@/components/organisms/SkillSection";
 import { VaccineSection } from "@/components/organisms/VaccineSection";
 import { PageShell } from "@/components/templates/PageShell";
 import { monthBodySize } from "@/features/growth/infant-months";
@@ -73,7 +75,9 @@ export default async function MonthPage({ params }: PageProps<"/[locale]/month/[
       <div className="mt-6">
         <AgeComparison step={step} locale={locale} dict={dict} />
       </div>
+      <RoutineSection step={step} locale={locale} dict={dict} />
       <CareSection step={step} dict={dict} />
+      <SkillSection step={step} dict={dict} />
       <VaccineSection step={step} />
       <div className="mt-6 flex justify-center">
         <Link href={localePath(locale)} className={buttonClass("primary")}>

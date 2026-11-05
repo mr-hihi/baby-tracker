@@ -153,8 +153,9 @@ Shared step **Add baby** `{date}`:
 - **Expected:**
   - Heading "Month 6"
   - Breadcrumbs "Home › Month by month › Month 6"
-  - Boy / girl table row "Boys" shows "67.6 cm" and "7.9 kg"
-  - Boy / girl table row "Girls" shows "65.7 cm" and "7.3 kg"
+  - Growth card row "Length" shows "66.7 cm (+1.7)", row "Weight" shows "7.6 kg (+0.4)"
+  - Boy / girl table row "Boys" shows "67.6 cm (+1.7)" and "7.9 kg (+0.4)"
+  - Boy / girl table row "Girls" shows "65.7 cm (+1.7)" and "7.3 kg (+0.4)"
   - Growth card image `alt` is "Illustration of a 6-month-old baby" and its `src` ends with `/assets/baby/age-00.svg`
   - Note "Length and weight are WHO reference medians." is visible
 
@@ -165,7 +166,7 @@ Shared step **Add baby** `{date}`:
   1. Navigate to /en/month/0/ and read the "Boys" and "Girls" rows
   2. Navigate to /en/age/0/ and read the same rows
   3. Repeat for /en/month/12/ vs /en/age/1/ and /en/month/24/ vs /en/age/2/
-- **Expected:**
+- **Expected:** (compare the value before any bracket; the change in brackets follows its own page)
   - Month 0 = age 0: Boys "49.9 cm" / "3.3 kg", Girls "49.1 cm" / "3.2 kg"
   - Month 12 = age 1: Boys "75.7 cm" / "9.6 kg", Girls "74 cm" / "8.9 kg"
   - Month 24 = age 2: Boys "87.1 cm" / "12.2 kg", Girls "85.7 cm" / "11.5 kg"
@@ -192,6 +193,112 @@ Shared step **Add baby** `{date}`:
   - Age 0 section lists links "Month 0" … "Month 11" (12 links)
   - Step 3 URL becomes /en/month/9/
   - Age 1 section lists links "Month 12" … "Month 24" (13 links)
+
+### Change since the previous month
+
+### TC-BP-28: Month page shows the change since the previous month
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /vi/month/1/
+  2. Navigate to /en/month/1/
+- **Expected:**
+  - vi growth card: row "Chiều dài" shows "54,2 cm (+4,7)", row "Cân nặng" shows "4,35 kg (+1,1)"
+  - vi table: "Trai" shows "54,7 cm (+4,8)" and "4,5 kg (+1,2)"; "Gái" shows "53,7 cm (+4,6)" and "4,2 kg (+1)"
+  - vi note "Số trong ngoặc là mức tăng so với tháng trước." is visible
+  - en growth card: row "Length" shows "54.2 cm (+4.7)", row "Weight" shows "4.35 kg (+1.1)"
+  - en note "Figures in brackets show the change since the previous month." is visible
+
+### TC-BP-29: Month 0 and week pages show no change
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/month/0/
+  2. Navigate to /en/week/20/
+- **Expected:**
+  - Month 0: growth card shows "49.5 cm" and "3.25 kg"; the table shows "49.9 cm", "3.3 kg", "49.1 cm", "3.2 kg"; no "(" in any of these values
+  - Month 0: note "Figures in brackets show the change since the previous month." is absent
+  - Week 20: row "Crown–heel length" shows "25.7 cm", row "Weight" shows "330 g", no brackets, no change note
+
+### TC-BP-30: Month 24 hides the height change and keeps the weight change
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/month/24/
+  2. Navigate to /vi/month/24/
+- **Expected:**
+  - en growth card: row "Height" shows "86.4 cm" with no brackets, row "Weight" shows "11.9 kg (+0.2)"
+  - en table: "Boys" shows "87.1 cm" and "12.2 kg (+0.2)"; "Girls" shows "85.7 cm" and "11.5 kg (+0.2)"
+  - en notes "Figures in brackets show the change since the previous month." and "From here the child is measured standing instead of lying down, so no height change is shown." are visible
+  - vi growth card: row "Chiều cao" shows "86,4 cm", row "Cân nặng" shows "11,9 kg (+0,2)"; note "Từ mốc này bé được đo đứng thay vì đo nằm, nên không tính mức tăng chiều cao." is visible
+  - /en/month/23/ has no method change note
+
+### TC-BP-31: The change is the difference of the shown figures
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/month/15/ and read the growth card
+  2. Click "Next" in the step selector
+- **Expected:**
+  - Month 15: row "Length" shows "78.3 cm (+1.1)", row "Weight" shows "9.95 kg (+0.2)"
+  - After step 2: URL becomes /en/month/16/, row "Length" shows "79.4 cm (+1.1)", row "Weight" shows "10.2 kg (+0.25)"
+
+### Change since the previous year
+
+### TC-BP-32: Ages 0 and 1 show a lying length, and age 1 compares with age 0
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/age/0/
+  2. Navigate to /en/age/1/
+  3. Navigate to /en/month/12/
+- **Expected:**
+  - Age 0: growth card row "Length" shows "49.5 cm", row "Weight" shows "3.25 kg", no brackets; table header "Length"; note "Length and weight are WHO reference medians." is visible; note "Figures in brackets show the change since the previous year." is absent
+  - Age 1: growth card row "Length" shows "74.9 cm (+25.4)", row "Weight" shows "9.25 kg (+6)"; table "Boys" shows "75.7 cm (+25.8)" and "9.6 kg (+6.3)"; notes "Length and weight are WHO reference medians." and "Figures in brackets show the change since the previous year." are visible
+  - Month 12: the same figures with the change since month 11: "74.9 cm (+1.2)", "9.25 kg (+0.2)"; note "Figures in brackets show the change since the previous month."
+
+### TC-BP-33: Age 2 hides the height change and keeps the weight change
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /vi/age/2/
+- **Expected:**
+  - Growth card row "Chiều cao" shows "86,4 cm" with no brackets, row "Cân nặng" shows "11,9 kg (+2,65)"
+  - Table "Trai" shows "87,1 cm" and "12,2 kg (+2,6)"; "Gái" shows "85,7 cm" and "11,5 kg (+2,6)"
+  - Notes "Số trong ngoặc là mức tăng so với năm trước." and "Từ mốc này bé được đo đứng thay vì đo nằm, nên không tính mức tăng chiều cao." are visible
+
+### TC-BP-34: Age 6 joins the two WHO tables and shows both changes
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/age/6/
+- **Expected:**
+  - Growth card row "Height" shows "115.6 cm (+5.9)", row "Weight" shows "20.4 kg (+2.1)"
+  - Table "Boys" shows "116 cm (+6)" and "20.5 kg (+2.2)"; "Girls" shows "115.1 cm (+5.7)" and "20.2 kg (+2)"
+  - No method or source change note
+
+### TC-BP-35: Age 11 hides the weight change where CDC weights start
+- **App:** Web (mobile)
+- **Precondition:** None
+- **Steps:**
+  1. Navigate to /en/age/11/
+  2. Click "Next" in the step selector
+- **Expected:**
+  - Age 11: growth card row "Height" shows "144.1 cm (+5.9)", row "Weight" shows "36.8 kg" with no brackets
+  - Age 11: table "Boys" shows "143.1 cm (+5.3)" and "36.1 kg"; "Girls" shows "145 cm (+6.4)" and "37.4 kg"
+  - Age 11: note "Weight here comes from a different reference table than the step before, so no change is shown." is visible
+  - After step 2: URL becomes /en/age/12/, growth card "150.2 cm (+6.1)" and "41.3 kg (+4.5)"; table "Boys" "149.1 cm (+6)" and "40.7 kg (+4.6)"; no source change note
+
+### TC-BP-36: Dashboard of a born baby shows the change since the previous year
+- **App:** Web (mobile)
+- **Precondition:** Empty `localStorage`
+- **Steps:**
+  1. Navigate to /vi/
+  2. Click "Thêm em bé", fill "Tên bé" with "Bông", fill "Ngày đầu kỳ kinh cuối" with today − 1410 days (`2022-12-18`), choose "Bé trai", click "Lưu"
+  3. Click "Mở menu" → "Thêm em bé", fill "Tên bé" with "Na", fill "Ngày đầu kỳ kinh cuối" with today − 147 days, click "Lưu"
+- **Expected:**
+  - After step 2: headline starts with "3 tuổi"; growth card row "Chiều cao" shows "96,1 cm (+9)", row "Cân nặng" shows "14,3 kg (+2,1)"; note "Số trong ngoặc là mức tăng so với năm trước." is visible
+  - After step 3 (dashboard on "Na", 21 weeks pregnant): growth card rows show "29 cm" and "476 g", no brackets, no change note
 
 ### Pregnancy week figures
 

@@ -144,13 +144,70 @@ Figures are reference values, never personal measurements. Every page shows the 
 |---|---|---|---|
 | Pregnancy weeks | week pages 4–40 | fruit, length (cm), weight (g) | [Pregnancy week figures](#pregnancy-week-figures) |
 | Pregnancy heart rate | week pages 6–40 | by week for weeks 6–12, 120–160 from week 13 | fetal heart rate references |
-| Months | months 0–24 | length / height (cm), weight (kg), boy and girl | WHO Child Growth Standards medians |
-| Years | ages 0–18 | height (cm), weight (kg), boy and girl; resting heart rate bands | WHO/CDC medians |
+| Months | months 0–24 | length / height (cm), weight (kg), boy and girl; change since the previous month | WHO Child Growth Standards medians |
+| Years | ages 0–18 | length / height (cm), weight (kg), boy and girl; change since the previous year; resting heart rate bands | WHO/CDC medians, see [Year figures](#year-figures) |
 
-- Months 0–23 show length (lying down), month 24 shows height (standing) — WHO switches at 24 months.
+- Months 0–23 and ages 0–1 show length (lying down); month 24 and ages 2–18 show height (standing) — WHO switches at 24 months.
 - Month 0, 12 and 24 rows equal the age 0, 1 and 2 rows.
 - A month uses the resting heart rate band of age `floor(M / 12)`.
 - No gender → height and weight are the boy–girl average.
+
+### Change since the previous step
+
+Each month and age figure shows how much it grew since the step before of the same kind, in brackets after the value: `66.7 cm (+1.7)`, `5.1 kg (+1.2)`.
+
+**Rules:**
+
+- Months 1–24 compare with the month before, ages 1–18 with the age before, for the same gender choice (boy, girl or the boy–girl average). Month 0 and age 0 have no change; week steps never show one. Month 12 and age 1 show the same figure with different changes: since month 11, and since age 0.
+- A figure is rounded where it comes from, to the precision it is shown with: length to 0.1 cm; weight to 1 g under 10 kg and to 100 g from 10 kg. Halves round up, so the age-8 average height shows `127 cm` (126.95) and the age-12 one `150.2 cm` (150.15).
+- The change is the difference of the two shown figures. Month 15 shows `9.95 kg` and month 16 `10.2 kg (+0.25)`.
+- A measure shows no change when this step measures it differently from the step before, or takes it from another reference family. WHO 2006 and WHO 2007 are one family (WHO 2007 was built to join WHO 2006 at 5 years); CDC 2000 is another. The rule compares the row labels in [Year figures](#year-figures); no age is written into the code.
+  - Month 24 and age 2: standing height after a lying length → no height change, method change note; the weight change still shows.
+  - Age 11: CDC 2000 weight after a WHO 2007 weight → no weight change, source change note; the height change still shows.
+- The change carries its sign and the locale's decimal separator, and no unit: it has the unit of the value before it. A weight change is in kg.
+- When a change shows, the growth card adds the month or age change note. The boy / girl table shows the change in each cell and relies on the card's notes.
+- The dashboard growth card of a born baby shows the age step for the baby's gender, so it shows the change since the previous year too.
+
+| Month | Gender | vi | en |
+|---|---|---|---|
+| 0 | average | `49,5 cm` · `3,25 kg` | `49.5 cm` · `3.25 kg` |
+| 1 | boy | `54,7 cm (+4,8)` · `4,5 kg (+1,2)` | `54.7 cm (+4.8)` · `4.5 kg (+1.2)` |
+| 1 | average | `54,2 cm (+4,7)` · `4,35 kg (+1,1)` | `54.2 cm (+4.7)` · `4.35 kg (+1.1)` |
+| 16 | average | `79,4 cm (+1,1)` · `10,2 kg (+0,25)` | `79.4 cm (+1.1)` · `10.2 kg (+0.25)` |
+| 24 | boy | `87,1 cm` · `12,2 kg (+0,2)` | `87.1 cm` · `12.2 kg (+0.2)` |
+
+| Age | Gender | vi | en |
+|---|---|---|---|
+| 0 | average | `49,5 cm` · `3,25 kg` | `49.5 cm` · `3.25 kg` |
+| 1 | average | `74,9 cm (+25,4)` · `9,25 kg (+6)` | `74.9 cm (+25.4)` · `9.25 kg (+6)` |
+| 2 | boy | `87,1 cm` · `12,2 kg (+2,6)` | `87.1 cm` · `12.2 kg (+2.6)` |
+| 6 | boy | `116 cm (+6)` · `20,5 kg (+2,2)` | `116 cm (+6)` · `20.5 kg (+2.2)` |
+| 11 | girl | `145 cm (+6,4)` · `37,4 kg` | `145 cm (+6.4)` · `37.4 kg` |
+| 12 | boy | `149,1 cm (+6)` · `40,7 kg (+4,6)` | `149.1 cm (+6)` · `40.7 kg (+4.6)` |
+
+### Year figures
+
+Every cell of the year table comes from one source, read at exactly `12·Y` months (CDC at its `Agemos` row `12·Y + 0.5`, the row for completed month `12·Y`).
+
+| Ages | Length / height | Method | Weight |
+|---|---|---|---|
+| 0–1 | WHO 2006 Child Growth Standards | lying (length) | WHO 2006 |
+| 2–5 | WHO 2006 Child Growth Standards | standing (height) | WHO 2006 |
+| 6–10 | WHO 2007 Growth Reference 5–19 years | standing | WHO 2007 |
+| 11–18 | WHO 2007 Growth Reference 5–19 years | standing | CDC 2000 growth charts (WHO 2007 has no weight-for-age after 10 years) |
+
+Tables read: WHO 2006 `lenanthro.txt` / `weianthro.txt` (age in days 0, 365, 731, 1096, 1461, 1826) and WHO 2007 `hfawho2007.txt` / `wfawho2007.txt` from the WHO `anthro` / `anthroplus` packages; CDC 2000 `statage.csv` / `wtage.csv`. The `M` (median) column, rounded to 0.1.
+
+| Age | Boy height (cm) | Boy weight (kg) | Girl height (cm) | Girl weight (kg) |
+|---|---|---|---|---|
+| 11 | 143.1 | 36.1 | 145.0 | 37.4 |
+| 12 | 149.1 | 40.7 | 151.2 | 41.8 |
+| 13 | 156.0 | 45.8 | 156.4 | 46.0 |
+| 14 | 163.2 | 51.2 | 159.8 | 49.5 |
+| 15 | 169.0 | 56.5 | 161.7 | 52.1 |
+| 16 | 172.9 | 61.1 | 162.5 | 53.9 |
+| 17 | 175.2 | 64.7 | 162.9 | 55.2 |
+| 18 | 176.1 | 67.3 | 163.1 | 56.2 |
 
 ### Pregnancy week figures
 
@@ -220,9 +277,11 @@ Heading "Pregnancy week N", fruit title, growth card (illustration, fruit, lengt
 |---|---|
 | Breadcrumbs | Home › Month by month › Month M |
 | Heading | "Month M" |
-| Growth card | Step selector over months; illustration of age `floor(M / 12)` from the neutral set; length or height and weight as the boy–girl average; heart rate band |
-| Boy / girl table | Length or height and weight for boys and girls |
+| Growth card | Step selector over months; illustration of age `floor(M / 12)` from the neutral set; length or height and weight as the boy–girl average, each with its change since the previous month; heart rate band; month figures note, month change note, method change note in month 24 |
+| Boy / girl table | Length or height and weight for boys and girls, each with its change since the previous month |
+| Feeding and sleep section | see [5. Feeding and Sleep](5-feeding-sleep.md) |
 | Care section | see [2. Care Guide](2-care-guide.md) |
+| Skills section | see [6. Skills to Teach](6-skills.md) |
 | Vaccines section | see [3. Vaccination Record](3-vaccination.md) |
 | Footer | "Track your baby" button, journey index |
 
@@ -230,8 +289,10 @@ Heading "Pregnancy week N", fruit title, growth card (illustration, fruit, lengt
 
 Heading "Age Y", milestone, growth card, boy / girl table, "Track your baby" button, journey index.
 
+- Growth card and boy / girl table: length (ages 0–1) or height and weight, each with its change since the previous year (none at age 0; no height change at age 2; no weight change at age 11). The figures note is the month figures note at ages 0–1 (lying length, WHO) and the age figures note from age 2. The age change note, the method change note (age 2) and the source change note (age 11) follow the rules in 1.6.
+
 - Age 0 shows a "Month by month" row linking to months 0–11; age 1 links to months 12–24.
-- Ages 2–18 show the Care and Vaccines sections.
+- Ages 2–18 show, in this order, the Feeding and sleep section ([5. Feeding and Sleep](5-feeding-sleep.md)), the Care section, the Skills section ([6. Skills to Teach](6-skills.md)) and the Vaccines section.
 
 ### Journey index
 
@@ -250,6 +311,12 @@ Three link grids on the home page and every guide page: "40 weeks of pregnancy" 
 | Month link label | Tháng {n} | Month {n} |
 | Month image alt | Minh hoạ bé {month} tháng tuổi | Illustration of a {month}-month-old baby |
 | Month figures note | Chiều dài, cân nặng là trung vị tham khảo của WHO. | Length and weight are WHO reference medians. |
+| Value with change | {value} ({delta}) | {value} ({delta}) |
+| Month change note | Số trong ngoặc là mức tăng so với tháng trước. | Figures in brackets show the change since the previous month. |
+| Age change note | Số trong ngoặc là mức tăng so với năm trước. | Figures in brackets show the change since the previous year. |
+| Method change note | Từ mốc này bé được đo đứng thay vì đo nằm, nên không tính mức tăng chiều cao. | From here the child is measured standing instead of lying down, so no height change is shown. |
+| Source change note | {measure} ở mốc này lấy từ bảng chuẩn khác mốc trước, nên không tính mức tăng. | {measure} here comes from a different reference table than the step before, so no change is shown. |
+| Age figures note | Chiều cao và cân nặng là trung vị tham khảo của WHO/CDC. | Height and weight are WHO/CDC reference medians. |
 
 ## 1.8 Images
 

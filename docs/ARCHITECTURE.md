@@ -38,24 +38,28 @@ static HTML (prerendered, no baby data)
 | `steps.ts` | One timeline: weeks 1–40 then ages 0–18 (59 steps); next / previous cross from week 40 to age 0; `stepWindow` shows 5 steps of one kind |
 | `timeline.ts` | `growthProgress(lastPeriodDate, today)` → pregnancy (weeks + days, due date) or born (age span); `stepForProgress` |
 | `pregnancy-weeks.ts` | Week table keyed by week page 4–40: fruit, length, weight in grams, heart rate |
-| `childhood-years.ts` | WHO/CDC medians per age and gender; resting heart rate bands |
-| `stats.ts` | `growthStats(step, gender)`; image paths |
+| `infant-months.ts` | WHO 2006 medians per month 0–24 and gender; `monthReference(month)`: length before month 24, height from month 24 |
+| `childhood-years.ts` | WHO 2006 / WHO 2007 / CDC 2000 medians per age and gender; `yearReference(age)`: size method and source of each row; `SOURCE_FAMILIES`; resting heart rate bands |
+| `stats.ts` | `growthStats(step, gender)`: reference figures rounded with `roundLength` / `roundWeight`, change since the previous month or age; image paths |
 
 - **Critical:** week N covers elapsed days `7(N-1)` … `7N-1`; day 280 is age 0.
 - **Critical:** month steps 0–24 are guide pages only, not on the timeline; WHO medians per month, with months 0 / 12 / 24 equal to ages 0 / 1 / 2. Rules: [business/1-baby-progress.md](business/1-baby-progress.md).
 - **Critical:** week page N shows the source tables' week-N row. Lengths are crown–rump up to week page 19 and crown–heel from week page 20 — the jump there is the change of method, not a bug. Rules: [business/1-baby-progress.md](business/1-baby-progress.md) → Pregnancy week figures.
+- **Critical:** a month or age figure's change is the difference of the two shown (rounded) values, month M−1 or age Y−1 to this one; it is left out when the two steps differ in size method (length → height) or source family (WHO → CDC). Rules: [business/1-baby-progress.md](business/1-baby-progress.md) → Change since the previous step.
 - No gender → height / weight are the boy–girl average and images come from the neutral set.
 
-## Care, vaccinations and prenatal tests
+## Care, feeding and sleep, skills, vaccinations and prenatal tests
 
 | Module | Responsibility | Spec |
 |---|---|---|
 | `src/features/care/` | Static care items (supplement / eat / avoid) per week, month, age | [business/2-care-guide.md](business/2-care-guide.md) |
+| `src/features/routine/` | Static feeding and sleep stages per month and age, the rows a guide page shows | [business/5-feeding-sleep.md](business/5-feeding-sleep.md) |
+| `src/features/skills/` | Static skill items per month and age, new items first | [business/6-skills.md](business/6-skills.md) |
 | `src/features/vaccinations/` | TCMR dose schedule, doses per step and per subject | [business/3-vaccination.md](business/3-vaccination.md) |
 | `src/features/prenatal-tests/` | Prenatal test schedule (NIPT), tests per week | [business/4-prenatal-tests.md](business/4-prenatal-tests.md) |
 | `src/features/schedule/` | Status of a scheduled item from the baby's current point, record date check; shared by vaccinations and prenatal tests | [business/3-vaccination.md](business/3-vaccination.md) § 3.4 |
 
-- Care items and the dose and test lists "at this step" are prerendered; status, the overdue list and the "Given" / "Done" control render only after babies load.
+- Care items, feeding and sleep, skills, and the dose and test lists "at this step" are prerendered; status, the overdue list and the "Given" / "Done" control render only after babies load.
 - Records are stored on `Baby.vaccinations` and `Baby.prenatalTests` (see `state-management.md`).
 
 ## Images

@@ -18,7 +18,8 @@ src/
 │   ├── molecules/    # StepSelector, StatRow, SizeBadge, Dialog, Breadcrumbs, AgeComparison,
 │   │                 #   StepLinkGrid, DoseRow, TestRow, ScheduleCard, ScheduleStatusBadge
 │   ├── organisms/    # GrowthCard, AppHeader, AppMenu, BabyDashboard, dialogs, JourneyIndex,
-│   │                 #   MonthLinks, CareSection, VaccineSection, VaccineCard, VaccineSchedule,
+│   │                 #   MonthLinks, CareSection, RoutineSection, SkillSection,
+│   │                 #   VaccineSection, VaccineCard, VaccineSchedule,
 │   │                 #   DoseRecordControl, PrenatalTestSection, PrenatalTestCard, PrenatalTestSchedule,
 │   │                 #   TestRecordControl, ScheduleRecordControl,
 │   │                 #   LanguageChoice + LanguageRedirect ("/" chooser)
@@ -30,8 +31,10 @@ src/
 │   ├── growth/       # timeline, steps (week / month / age), data tables, stats, image paths
 │   ├── locale/       # locales, dictionaries, format helpers, LocaleProvider, preference
 │   ├── prenatal-tests/ # prenatal test schedule, tests per week, test text
+│   ├── routine/      # feeding and sleep stages, routine rows per step
 │   ├── schedule/     # status from the current point and record date check, shared by vaccinations and prenatal-tests
 │   ├── seo/          # pageMetadata, JSON-LD builders
+│   ├── skills/       # skill items table, skills per step
 │   └── vaccinations/ # dose schedule, doses per step, dose text
 ├── lib/              # date.ts (ISO date math), site.ts (URLs, base path, paths)
 └── store/            # makeStore, typed hooks, persistence
@@ -40,7 +43,7 @@ src/
 ## Rules
 
 - **Critical:** domain logic (dates, growth, formatting, validation) lives in `features/*` / `lib/` as pure functions — never inside a component.
-- **Critical:** `GrowthCard`, `StepSelector`, `SizeBadge`, `StatRow`, `JourneyIndex`, `MonthLinks`, `StepLinkGrid`, `CareSection`, `AgeComparison`, `Breadcrumbs`, `ScheduleCard`, `PageShell` have no hooks and no `"use client"`, because server guide pages render them. Those with a `navigation` prop take `mode = "link"` on guide pages and `mode = "state"` on the client dashboard. Keep them hook-free.
+- **Critical:** `GrowthCard`, `StepSelector`, `SizeBadge`, `StatRow`, `JourneyIndex`, `MonthLinks`, `StepLinkGrid`, `CareSection`, `RoutineSection`, `SkillSection`, `AgeComparison`, `Breadcrumbs`, `ScheduleCard`, `PageShell` have no hooks and no `"use client"`, because server guide pages render them. Those with a `navigation` prop take `mode = "link"` on guide pages and `mode = "state"` on the client dashboard. Keep them hook-free.
 - Components that read the store are client components (`"use client"`) at organism level. A generic molecule may be a client component only for a browser API it wraps without app state (`Dialog` → `showModal()`).
 - Atoms never import from `features/` state; molecules compose atoms; organisms connect state; pages assemble.
 - Tests sit next to the module: `foo.ts` → `foo.test.ts`.
